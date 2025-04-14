@@ -6,9 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
+    protected $table = 'users';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -18,8 +20,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'surname',
+        'cpf',
+        'gender_id',
         'email',
+        'mobile_number',
+        'born_date',
+        'address_id',
         'password',
     ];
 
@@ -44,5 +52,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function gender(): HasOne
+    {
+        return $this->hasOne(Gender::class, 'id', 'gender_id');
+    }
+
+    public function address(): HasOne
+    {
+        return $this->hasOne(Address::class, 'id', 'address_id');
     }
 }
