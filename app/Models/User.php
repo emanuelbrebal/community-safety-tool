@@ -29,6 +29,8 @@ class User extends Authenticatable
         'born_date',
         'address_id',
         'password',
+        'publication',
+        'response'
     ];
 
     /**
@@ -62,5 +64,15 @@ class User extends Authenticatable
     public function address(): HasOne
     {
         return $this->hasOne(Address::class, 'id', 'address_id');
+    }
+
+    public function publication(): HasMany
+    {
+        return $this->hasMany(Publication::class, 'user_id', 'id');
+    }
+
+    public function response(): HasMany
+    {
+        return $this->hasMany(Response::class, 'user_id', 'id');
     }
 }
