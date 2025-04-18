@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HousingProfile extends Model
 {
-    protected $table = 'housing_profile';
+    protected $table = 'housing_profiles';
 
     public $timestamps = false;
 
     protected $fillable = [
-        //definir quantas e quais perguntas de checkbox irão ser feitas a respeito do perfil de moradia
+        'question',
+        'check'
     ];
 
     public function address(): BelongsTo
