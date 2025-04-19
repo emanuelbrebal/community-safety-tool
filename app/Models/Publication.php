@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Publication extends Model
 {
@@ -25,11 +25,11 @@ class Publication extends Model
     {
         return $this->hasMany(Response::class, 'id', 'response_id');
     }
-}
+
     public function user_id(): HasOne
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
-
+}
      
 

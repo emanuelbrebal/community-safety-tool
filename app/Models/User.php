@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -29,8 +30,9 @@ class User extends Authenticatable
         'born_date',
         'address_id',
         'password',
-        'publication',
-        'response'
+        'publication_id',
+        'response_id',
+        'active'
     ];
 
     /**
@@ -66,12 +68,12 @@ class User extends Authenticatable
         return $this->hasOne(Address::class, 'id', 'address_id');
     }
 
-    public function publication(): HasMany
+    public function publication_id(): HasMany
     {
         return $this->hasMany(Publication::class, 'user_id', 'id');
     }
 
-    public function response(): HasMany
+    public function response_id(): HasMany
     {
         return $this->hasMany(Response::class, 'user_id', 'id');
     }

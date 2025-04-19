@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Community extends Model
 {
-    protected $table = 'community';
+    protected $table = 'communities';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'community'
+        'community',
+        'active'
     ];
 
     public function address(): BelongsTo

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="./vue.js"}}></script>
+
         <title>Laravel</title>
 
         <!-- Fonts -->
@@ -11,13 +11,7 @@
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
        <body>
-            <div id="app"></div>
+            <h1>tela de registro!</h1>
        </body>
-
-        <script>
-            const boasVindasVueApp = {
-
-            }
-            Vue.createApp(boasVindasVueApp).mount('$app');
-        </script>
+    
 </html>
