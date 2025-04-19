@@ -17,13 +17,13 @@ class Publication extends Model
         'image',
         'user_id',
         'message',
-        'response_id'
+        'comment_id'
     ];
 
   
-    public function response_id(): HasMany
+    public function comment_id(): HasMany
     {
-        return $this->hasMany(Response::class, 'id', 'response_id');
+        return $this->hasMany(Comment::class, 'id', 'comment_id');
     }
 
     public function user_id(): HasOne

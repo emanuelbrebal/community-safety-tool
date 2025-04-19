@@ -27,8 +27,8 @@ return new class extends Migration
             $table->unsignedBigInteger('publication_id');
             $table->foreign('publication_id')->references('id')->on('publications')->onDelete('cascade');
 
-            $table->unsignedBigInteger('response_id');
-            $table->foreign('response_id')->references('id')->on('responses')->onDelete('cascade');
+            $table->unsignedBigInteger('comment_id');
+            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
             
             $table->string('password');
             $table->timestamps();
