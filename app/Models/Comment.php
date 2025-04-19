@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Response extends Model
+class Comment extends Model
 {
-    protected $table = 'responses';
+    protected $table = 'comments';
 
     public $timestamps = true;
 

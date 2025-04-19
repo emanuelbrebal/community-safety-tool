@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        Schema::table('responses', function (Blueprint $table) {
+        Schema::table('comments', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->after('id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->dropColumn('user_id');
         });
 
-        Schema::table('responses', function (Blueprint $table) {
+        Schema::table('comments', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
         });

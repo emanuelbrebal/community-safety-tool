@@ -31,7 +31,7 @@ class User extends Authenticatable
         'address_id',
         'password',
         'publication_id',
-        'response_id',
+        'comment_id',
         'active'
     ];
 
@@ -73,8 +73,8 @@ class User extends Authenticatable
         return $this->hasMany(Publication::class, 'user_id', 'id');
     }
 
-    public function response_id(): HasMany
+    public function comment_id(): HasMany
     {
-        return $this->hasMany(Response::class, 'user_id', 'id');
+        return $this->hasMany(Comment::class, 'user_id', 'id');
     }
 }
