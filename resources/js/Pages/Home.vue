@@ -1,19 +1,15 @@
 <!-- resources/js/Pages/Home.vue -->
 <script setup>
-import { ref } from 'vue'
-import Switch from '@/components/ui/switch/Switch.vue'
+import MainLayout from '@/Layouts/MainLayout.vue'
 
-const isChecked = ref(false)
+defineOptions({ layout: MainLayout }) 
+
+const mensagem = 'Bem-vindo à Home!'
 </script>
 
 <template>
-  <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">Página Inicial</h1>
-
-    <div class="flex items-center gap-4">
-      <label class="font-medium">Ativar:</label>
-      <Switch v-model:checked="isChecked" />
-      <span>{{ isChecked ? 'Ligado' : 'Desligado' }}</span>
-    </div>
+  <div>
+    <h2 class="text-xl font-semibold mb-4">Página Inicial</h2>
+    <p>{{ mensagem }}</p>
   </div>
 </template>
