@@ -13,37 +13,49 @@ class CommunitySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('community')->insert(
+        $communities = [
             [
                 'community' => "Vale do Reginaldo",
+                'active' => true
             ],
             [
                 'community' => "Grota do Cigano",
+                'active' => true
             ],
             [
                 'community' => "Grota da Alegria B",
+                'active' => true
             ],
             [
-                'community' => "Brejal",
+                'community' => "Vila Brejal",
+                'active' => true
             ],
             [
                 'community' => "Área Vulnerabilizada do Vergel",
+                'active' => true
             ],
             [
                 'community' => "Conjunto Paraíso do Horto",
+                'active' => true
             ],
             [
                 'community' => "Grota do Moreira",
+                'active' => true
             ],
             [
                 'community' => "Chã de Bebedouro A",
+                'active' => true
             ],
             [
                 'community' => "Alto São Rafael",
+                'active' => true
             ],
             [
                 'community' => "Grota do Rafael",
-            ],
-        );
+                'active' => true
+            ]
+        ];
+
+        DB::table('communities')->insert($communities);
     }
 }
