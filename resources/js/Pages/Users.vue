@@ -1,9 +1,9 @@
+
 <script setup>
 import MainLayout from '@/Layouts/MainLayout.vue'
 
 defineOptions({ layout: MainLayout }) 
-
-const mensagem = 'Bem-vindo à Home!'
+const usuarios = $usuarios;
 </script>
 
 <template>

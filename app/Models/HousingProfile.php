@@ -13,11 +13,19 @@ class HousingProfile extends Model
 
     protected $fillable = [
         'question',
-        'check'
+        'check',
+        'section_id',
     ];
 
     public function address(): BelongsTo
     {
-        return $this->belongsTo(Address::class, 'housing_profile', 'id');
+        return $this->belongsTo(Address::class, 'housing_profile_id', 'id'); 
+    }
+    
+    public function section(): BelongsTo
+    {
+        return $this->belongsTo(SectionTitle::class, 'section_id');
     }
 }
+
+
