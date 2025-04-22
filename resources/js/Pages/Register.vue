@@ -1,36 +1,69 @@
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
+import { useForm } from '@inertiajs/vue3';
 
 defineOptions({ layout: MainLayout });
 
 const props = defineProps({
   genders: Array,
   communities: Array,
-  housing_profile_questions: Array,
+  housing_profile_questions: Object,
 });
+
+
+const form = useForm({
+  first_name: '',
+  surname: '',
+  cpf: '',
+  gender_id: '',
+  email: '',
+  mobile_number: '',
+  born_date: '',
+  password: '',
+  community_id: '',
+  public_place: '',
+  number: '',
+  complement: '',
+  zip_code: '',
+  district: '',
+  municipality: '',
+  state: '',
+  housing_questions: {}, 
+});
+
+Object.values(props.housing_profile_questions).forEach((questions) => {
+  questions.forEach((q) => {
+    form.housing_questions[q.id] = null;
+  })
+})
+
+const submit = () =>{
+  form.post(route('createRegister'));
+};
+
 </script>
 
 <template>
   <div class="">
     <h3 class="px-4 py-3">Cadastro Pessoal</h3>
-    <form class="px-4 py-3" action="{{ route('createRegister') }}">
+    <form class="px-4 py-3" @submit.prevent="submit">
       <div class="row mb-3">
         <div class="col form-group">
           <label for="first_name">Primeiro nome:</label>
-          <input type="text" class="form-control" name="first_name" required />
+          <input type="text" class="form-control" v-model="form.first_name" required />
         </div>
         <div class="col form-group">
-          <label for="first_name">Sobrenome:</label>
-          <input type="text" class="form-control" name="surname" required />
+          <label for="surname">Sobrenome:</label>
+          <input type="text" class="form-control" v-model="form.surname" required />
         </div>
       </div>
       <div class="mb-3 form-group">
-        <label for="first_name">CPF:</label>
-        <input type="text" class="form-control" name="cpf" required />
+        <label for="cpf">CPF:</label>
+        <input type="text" class="form-control" v-model="form.cpf" required />
       </div>
       <div class="mb-3 form-group">
         <label for="gender_id">Gênero:</label>
-        <select name="gender_id" class="form-control" id="gender_id" required>
+        <select v-model="form.gender_id" class="form-control" id="gender_id" required>
           <option disabled value="">Selecione um gênero:</option>
           <option
             v-for="gender in props.genders"
@@ -43,30 +76,29 @@ const props = defineProps({
       </div>
       <div class="mb-3 form-group">
         <label for="email">E-mail:</label>
-        <input type="email" class="form-control" name="email" required />
+        <input type="email" class="form-control" v-model="form.email" required />
       </div>
       <div class="mb-3 form-group">
-        <label for="first_name">Número de celular:</label>
-        <input type="text" class="form-control" name="mobile_number" required />
+        <label for="mobile_number">Número de celular:</label>
+        <input type="text" class="form-control" v-model="form.mobile_number" max="11" required />
       </div>
       <div class="mb-3 form-group">
-        <label for="first_name">Data de nascimento:</label>
-        <input type="date" class="form-control" name="born_date" required />
+        <label for="born_date">Data de nascimento:</label>
+        <input type="date" class="form-control" v-model="form.born_date" required />
       </div>
       <div class="mb-3 form-group">
-        <label for="first_name">Senha:</label>
-        <input type="password" class="form-control" name="password" required />
+        <label for="password">Senha:</label>
+        <input type="password" class="form-control" v-model="form.password" required />
       </div>
 
       <hr />
       <h3 class="px-4 py-3">Cadastro de Endereço</h3>
       <div class="row">
-        <!-- colocar o valor do address_id para salvar os dados de endereço do usuário ao submeter o formulário -->
-        <input type="hidden" name="address_id" value="" />
+  
         <div class="mb-3 form-group">
           <label for="community_id">Comunidade:</label>
           <select
-            name="community_id"
+            v-model="form.community_id"
             class="form-control"
             id="community_id"
             required
@@ -84,17 +116,17 @@ const props = defineProps({
 
         <div class="form-group row mb-3">
           <div class="col form-group">
-            <label for="first_name">Logradouro:</label>
+            <label for="public_place">Logradouro:</label>
             <input
               type="text"
               class="form-control"
-              name="first_name"
+              v-model="form.public_place"
               required
             />
           </div>
           <div class="col form-group">
-            <label for="first_name">Número:</label>
-            <input type="text" class="form-control" name="surname" required />
+            <label for="number">Número:</label>
+            <input type="text" class="form-control" v-model="form.number" required />
           </div>
         </div>
 
@@ -102,7 +134,7 @@ const props = defineProps({
           <label for="complement">Complemento:</label>
           <textarea
             class="form-control"
-            name="complement"
+            v-model="form.complement"
             id="complement"
             cols="30"
             rows="3"
@@ -111,40 +143,39 @@ const props = defineProps({
 
         <div class="form-group row mb-3">
           <div class="col form-group">
-            <label for="first_name">CEP:</label>
+            <label for="zip_code">CEP:</label>
             <input
               type="text"
               class="form-control"
-              name="first_name"
+              v-model="form.zip_code"
               required
             />
           </div>
           <div class="col form-group">
-            <label for="first_name">Bairro:</label>
-            <input type="text" class="form-control" name="surname" required />
+            <label for="district">Bairro:</label>
+            <input type="text" class="form-control" v-model="form.district" required />
           </div>
         </div>
 
         <div class="form-group row mb-3">
           <div class="col form-group">
-            <label for="first_name">Cidade:</label>
+            <label for="municipality">Município:</label>
             <input
               type="text"
               class="form-control"
-              name="first_name"
+              v-model="form.municipality"
               required
             />
           </div>
           <div class="col form-group">
-            <label for="first_name">Estado:</label>
-            <input type="text" class="form-control" name="surname" required />
+            <label for="state">Estado:</label>
+            <input type="text" class="form-control" v-model="form.state" required />
           </div>
         </div>
 
         <hr />
         <h3 class="px-4 py-3">Perfil de Moradia</h3>
-        <input type="hidden" name="address_id" value="" />
-
+      
         <div
           v-for="(questions, sectionTitle) in props.housing_profile_questions"
           :key="sectionTitle"
@@ -166,9 +197,9 @@ const props = defineProps({
                 type="radio"
                 :id="'question_' + question.id + '_yes'"
                 :name="'question_' + question.id"
-                value="yes"
-                v-model="question.checked"
-              />
+                value= true
+                v-model="form.housing_questions[question.id]"              
+                />
               <label
                 class="form-check-label"
                 :for="'question_' + question.id + '_yes'"
@@ -183,8 +214,9 @@ const props = defineProps({
                 type="radio"
                 :id="'question_' + question.id + '_no'"
                 :name="'question_' + question.id"
-                value="no"
-                v-model="question.checked"
+                value=false
+                v-model="form.housing_questions[question.id]"
+                
               />
               <label
                 class="form-check-label"
@@ -195,6 +227,11 @@ const props = defineProps({
             </div>
           </div>
         </div>
+      </div>
+      <div class="">
+        <button class="btn btn-primary" type="submit">
+          Cadastrar
+        </button>
       </div>
     </form>
   </div>
