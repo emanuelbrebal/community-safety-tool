@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Address extends Model
 {
@@ -17,12 +18,12 @@ class Address extends Model
         'zip_code',
         'state',
         'municipality',
+        'district',
         'public_place',
         'street',
         'number',
         'complement',
         'user_id',
-        'housing_profile'
     ];
 
     public function community(): HasOne
@@ -35,8 +36,8 @@ class Address extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function housing_profile(): HasOne
+    public function housingProfileAnswers(): HasMany
     {
-        return $this->hasOne(HousingProfile::class, 'id', 'community_id');
+        return $this->hasMany(HousingProfileAnswer::class);
     }
 }

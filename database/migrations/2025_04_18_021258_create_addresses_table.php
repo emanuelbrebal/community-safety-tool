@@ -17,19 +17,19 @@ return new class extends Migration
             $table->unsignedBigInteger('community_id');
             $table->foreign('community_id')->references('id')->on('communities')->onDelete('cascade');
             
-            $table->string('zip-code');
+            $table->string('zip_code');
             $table->string('state');
             $table->string('municipality');
             $table->string('public_place');
             $table->string('street');
-            $table->integer('number');
+            $table->string('city');
+            $table->integer('number')->nullable();
+            $table->string('district');
             $table->string('complement')->nullable();
             
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             
-            $table->unsignedBigInteger('housing_profile_id');
-            $table->foreign('housing_profile_id')->references('id')->on('housing_profiles')->onDelete('cascade');
             $table->timestamps();
         });
     }
