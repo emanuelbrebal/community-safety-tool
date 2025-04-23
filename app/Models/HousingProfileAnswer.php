@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class HousingProfileAnswer extends Model
 {
@@ -13,9 +15,16 @@ class HousingProfileAnswer extends Model
         'check'
     ];
 
-    public function address()
+    public $timestamps = false;
+
+    public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(HousingProfile::class, 'question_id');
     }
 }
 

@@ -20,17 +20,11 @@ return new class extends Migration
             $table->string('zip_code');
             $table->string('state');
             $table->string('municipality');
-            $table->string('public_place');
-            $table->string('street');
-            $table->string('city');
-            $table->integer('number')->nullable();
             $table->string('district');
+            $table->string('public_place');
+            $table->string('number')->nullable();
             $table->string('complement')->nullable();
             
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
-            $table->timestamps();
         });
     }
 

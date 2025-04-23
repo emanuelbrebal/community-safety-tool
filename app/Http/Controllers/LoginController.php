@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Address;
 use App\Models\Community;
 use App\Models\Gender;
 use App\Models\HousingProfile;
@@ -43,28 +44,31 @@ class LoginController extends Controller
             // dd($request);
 
             $user = User::create([
-                'first_name' => $request['first_name'],
-                'surname' => $request['surname'],
-                'cpf' => $request['cpf'],
-                'gender_id' => $request['gender_id'],
-                'email' => $request['email'],
-                'mobile_number' => $request['mobile_number'],
-                'born_date' => $request['born_date'],
-                'password' => bcrypt($request['password']),
+                'first_name' => $request->first_name,
+                'surname' => $request->surname,
+                'cpf' => $request->cpf,
+                'gender_id' => $request->gender_id,
+                'email' => $request->email,
+                'mobile_number' => $request->mobile_number,
+                'born_date' => $request->born_date,
+                'password' => bcrypt($request->password),
             ]);
 
-            $address = $user->address()->create([
-                'community_id' => $request['community_id'],
-                'public_place' => $request['public_place'],
-                'number'       => $request['number'],
-                'complement'   => $request['complement'],
-                'zip_code'     => $request['zip_code'],
-                'district'     => $request['district'],
-                'municipality' => $request['municipality'],
-                'state'        => $request['state'],
+            $address = Address::create([
+                'community_id' => $request->community_id,
+                'zip_code'     => $request->zip_code,
+                'state'        => $request->state,
+                'municipality' => $request->municipality,
+                'district'     => $request->district,
+                'public_place' => $request->public_place,
+                'number'       => $request->number,
+                'complement'   => $request->complement,
             ]);
 
-            foreach ($request['housing_questions'] as $questionId => $value) {
+            $user->address_id = $address->id;
+            $user->save();
+
+            foreach ($request->housing_questions as $questionId => $value) {
                 HousingProfileAnswer::create([
                     'user_id'    => $user->id,
                     'address_id' => $address->id,
@@ -73,24 +77,14 @@ class LoginController extends Controller
                 ]);
             }
 
-            $user->address_id = $address->id;
-            $user->save();
 
             DB::commit();
 
-            return redirect()->route('redirecionarHome')->with('success', 'Cadastro realizado com sucesso!');
+            return redirect()->route('redirectHome')->with('success', 'Cadastro realizado com sucesso!');
         } catch (\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('error', 'Erro ao cadastrar: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao cadastrar usuário!');
         }
-    }
-    public function listUsers()
-    {
-        $users = User::active()->orderByName()->all();
-
-        return Inertia::render('Users', [
-            'users' => $users
-        ]);
     }
 }

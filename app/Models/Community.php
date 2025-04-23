@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Community extends Model
@@ -15,8 +15,8 @@ class Community extends Model
         'active'
     ];
 
-    public function address(): BelongsTo
+    public function addresses(): HasMany
     {
-        return $this->belongsTo(Address::class, 'community_id', 'id');
+        return $this->hasMany(Address::class, 'community_id', 'id');
     }
 }

@@ -30,8 +30,8 @@ class User extends Authenticatable
         'born_date',
         'address_id',
         'password',
-        'publication_id',
-        'comment_id',
+        // 'publication_id',
+        // 'comment_id',
         'active'
     ];
 
