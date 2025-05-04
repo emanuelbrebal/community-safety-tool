@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('address_id')->references('id')->on('addresses');
 
             $table->unsignedSmallInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('housing_profiles');
+            $table->foreign('question_id')->references('id')->on('housing_profiles_questions');
 
 
             $table->boolean('check')->default(false);

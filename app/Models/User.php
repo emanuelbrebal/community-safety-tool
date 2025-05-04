@@ -30,8 +30,6 @@ class User extends Authenticatable
         'born_date',
         'address_id',
         'password',
-        // 'publication_id',
-        // 'comment_id',
         'active'
     ];
 
@@ -65,7 +63,7 @@ class User extends Authenticatable
 
     public function address(): HasOne
     {
-        return $this->hasOne(Address::class, 'id', 'address_id');
+        return $this->hasOne(Address::class, 'user_id');
     }
 
     public function publication_id(): HasMany

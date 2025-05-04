@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HousingProfile extends Model
 {
-    protected $table = 'housing_profiles';
+    protected $table = 'housing_profiles_questions';
 
     public $timestamps = false;
 

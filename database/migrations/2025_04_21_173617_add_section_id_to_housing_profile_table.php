@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('housing_profiles', function (Blueprint $table) {
+        Schema::table('housing_profiles_questions', function (Blueprint $table) {
             $table->unsignedTinyInteger('section_id');
             $table->foreign('section_id')->references('id')->on('section_title')->onDelete('cascade');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('housing_profiles', function (Blueprint $table) {
+        Schema::table('housing_profiles_questions', function (Blueprint $table) {
             $table->dropForeign(['section_id']);
             $table->dropColumn('section_id');
         });

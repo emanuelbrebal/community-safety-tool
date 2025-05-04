@@ -24,12 +24,6 @@ return new class extends Migration
             $table->string('mobile_number');
             $table->date('born_date');
 
-            $table->unsignedBigInteger('publication_id')->nullable();
-            $table->foreign('publication_id')->references('id')->on('publications')->onDelete('cascade');
-
-            $table->unsignedBigInteger('comment_id')->nullable();
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
-            
             $table->string('password');
             $table->boolean('active')->default(true);
             $table->timestamps();
