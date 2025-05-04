@@ -1,0 +1,20 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.header,
+.footer {
+    height: 8dvh;
+    width: 100dvw;
+}
+
+.header{
+    border-bottom: solid 10px #747e78;
+}
+
+.full-size {
+    min-height: 84dvh;
+    width: 100%;
+}
