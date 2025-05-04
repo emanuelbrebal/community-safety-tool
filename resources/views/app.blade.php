@@ -6,8 +6,9 @@
     @routes
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @inertiaHead
+    @vite(['resources/css/appBlade.css'])
 </head>
-<body class="font-sans antialiased">
+<body class="font-sans antialiased full-size">
     @inertia
 </body>
 </html>

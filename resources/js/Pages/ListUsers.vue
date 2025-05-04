@@ -1,6 +1,7 @@
 
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
+import "../../css/usersDashboard.css"
 
 defineOptions({ layout: MainLayout });
 
@@ -10,21 +11,6 @@ defineProps({
 });
 
 </script>
-
-<style>
-  .btn{
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-@media screen and (max-width: 520px) {
-  #addressSpan, #housingProfileSpan{
-    display: none;
-  }
-
-}
-</style>
 
 <template>
   <div class="container">

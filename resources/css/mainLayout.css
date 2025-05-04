@@ -1,0 +1,30 @@
+.bg-navbar, .bg-footer{
+    background-color: #86908a;
+    :nth-child{
+        color: white;
+    }
+}
+
+.container{
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 1rem #747e78;
+}
+
+.main-bg{
+    background-color: #a9b4ad;
+}
+
+.main-size{
+    margin: 2rem;
+    height: 30rem;
+    width: 100%;
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+}

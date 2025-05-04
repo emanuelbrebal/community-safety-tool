@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useForm } from '@inertiajs/vue3';
+import '../../css/mainLayout.css';
 
 const page = usePage();
 
@@ -27,8 +28,8 @@ const listar = () => {
 
 <template>
   <div class="min-h-screen flex flex-col">
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <header class="header">
+      <nav class="navbar navbar-expand-lg navbar-light bg-navbar">
         <div class="container-fluid">
           <a class="navbar-brand" @click="home">Guardião da Vila</a>
           <div class="d-flex ms-auto">
@@ -43,7 +44,8 @@ const listar = () => {
       </nav>
     </header>
 
-    <main>
+    <main class="main-bg">
+      <!-- Exibição de mensagens de sucesso ou erro -->
       <div v-if="success" class="alert alert-success" role="alert">
         {{ success }}
       </div>
@@ -51,15 +53,15 @@ const listar = () => {
         {{ error }}
       </div>
 
-      <slot />
+      <div class="full-size main">
+        <slot />
+      </div>
     </main>
 
-    <footer class="bg-light text-center py-3 mt-auto">
-      <div class="container">
-        <span class="text-muted"
-          >© 2025 Guardião da Vila. Todos os direitos reservados.</span
-        >
-      </div>
+    <footer class="bg-footer text-center py-3 mt-auto footer">
+        <span class="text-muted">
+          © 2025 Guardião da Vila. Todos os direitos reservados.
+        </span>
     </footer>
   </div>
 </template>
