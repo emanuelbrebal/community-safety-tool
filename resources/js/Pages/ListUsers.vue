@@ -6,7 +6,6 @@ defineOptions({ layout: MainLayout });
 
 defineProps({ 
   users: Array,
-  address: Array,
   answers: Array
 });
 

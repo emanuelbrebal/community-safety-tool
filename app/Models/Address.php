@@ -23,9 +23,10 @@ class Address extends Model
         'street',
         'number',
         'complement',
+        'user_id'
     ];
 
-    
+
     public function community(): BelongsTo
     {
         return $this->belongsTo(Community::class, 'community_id', 'id');
@@ -33,7 +34,7 @@ class Address extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function housingProfileAnswers(): HasMany

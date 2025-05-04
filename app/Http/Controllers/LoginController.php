@@ -63,9 +63,10 @@ class LoginController extends Controller
                 'public_place' => $request->public_place,
                 'number'       => $request->number,
                 'complement'   => $request->complement,
+                'user_id'      => $user->id
             ]);
 
-            $user->address_id = $address->id;
+            // $user->address_id = $address->id;
             $user->save();
 
             foreach ($request->housing_questions as $questionId => $value) {
@@ -83,7 +84,6 @@ class LoginController extends Controller
             return redirect()->route('redirectHome')->with('success', 'Cadastro realizado com sucesso!');
         } catch (\Exception $e) {
             DB::rollback();
-
             return redirect()->back()->with('error', 'Erro ao cadastrar usuário!');
         }
     }

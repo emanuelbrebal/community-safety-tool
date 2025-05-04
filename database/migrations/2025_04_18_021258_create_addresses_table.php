@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('number')->nullable();
             $table->string('complement')->nullable();
             
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

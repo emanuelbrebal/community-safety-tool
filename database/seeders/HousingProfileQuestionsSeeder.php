@@ -99,6 +99,6 @@ class HousingProfileQuestionsSeeder extends Seeder
 
         ];
 
-        DB::table('housing_profiles')->insert($questions);
+        DB::table('housing_profiles_questions')->insert($questions);
     }
 }
