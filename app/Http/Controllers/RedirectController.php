@@ -6,18 +6,26 @@ use App\Models\Address;
 use App\Models\HousingProfileAnswer;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class RedirectController extends Controller
 {
     public function redirectHome()
     {
-        return Inertia::render('Home');
+        if (Auth::guard('admin')->check()) {
+            return Inertia::render('Home', [
+                'user' => Auth::guard('admin')->user()
+            ]);
+        }
+        return Inertia::render('Home', [
+            'user' => Auth::guard('users')->user()
+        ]);
     }
 
     public function redirectRegister()
     {
-        return view('register');
+        return Inertia::render('Register');
     }
 
     public function redirectListUsers()
