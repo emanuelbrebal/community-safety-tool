@@ -13,7 +13,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'resources/js'),    
+      '@': path.resolve(__dirname, 'resources/js'),
+      '@l': path.resolve(__dirname, 'resources/js/Layouts'),
+      '@css': path.resolve(__dirname, 'resources/css'),
       '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
     },
   },

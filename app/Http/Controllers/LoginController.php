@@ -2,89 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
-use App\Models\Address;
-use App\Models\Community;
-use App\Models\Gender;
-use App\Models\HousingProfile;
-use App\Models\HousingProfileAnswer;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class LoginController extends Controller
 {
-    public function redirectRegister()
+    public function showLogin()
     {
-        $genders = Gender::all();
-        $communities = Community::all()->where('active', true);
-        $housing_profile_questions = HousingProfile::with('section')
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->section->section_title;
-            });
-        return Inertia::render('Register', [
-            'genders' => $genders,
-            'communities' => $communities,
-            'housing_profile_questions' => $housing_profile_questions
-        ]);
+        return Inertia::render('Login/Login')
+            ->withViewData(['rootView' => 'views.app']);
     }
 
-    public function createRegister(Request $request)
+    public function login(Request $request)
     {
-        //aqui vem um service para criar o registro de usuário
-        //outro para o endereço
-        //e o outro para o perfil de moradia, cada um com seu form request
-        //    dd($request);
-        DB::beginTransaction();
+        $credentials = $request->only(['cpf', 'password']);
 
-        try {
-
-            // dd($request);
-
-            $user = User::create([
-                'first_name' => $request->first_name,
-                'surname' => $request->surname,
-                'cpf' => $request->cpf,
-                'gender_id' => $request->gender_id,
-                'email' => $request->email,
-                'mobile_number' => $request->mobile_number,
-                'born_date' => $request->born_date,
-                'password' => bcrypt($request->password),
-            ]);
-
-            $address = Address::create([
-                'community_id' => $request->community_id,
-                'zip_code'     => $request->zip_code,
-                'state'        => $request->state,
-                'municipality' => $request->municipality,
-                'district'     => $request->district,
-                'public_place' => $request->public_place,
-                'number'       => $request->number,
-                'complement'   => $request->complement,
-                'user_id'      => $user->id
-            ]);
-
-            // $user->address_id = $address->id;
-            $user->save();
-
-            foreach ($request->housing_questions as $questionId => $value) {
-                HousingProfileAnswer::create([
-                    'user_id'    => $user->id,
-                    'address_id' => $address->id,
-                    'question_id' => $questionId,
-                    'check'      => filter_var($value, FILTER_VALIDATE_BOOLEAN),
-                ]);
-            }
-
-
-            DB::commit();
-
-            return redirect()->route('redirectHome')->with('success', 'Cadastro realizado com sucesso!');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->back()->with('error', 'Erro ao cadastrar usuário!');
+        if (Auth::guard('users')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('redirectHome')->with('success', 'Login realizado com sucesso!');
         }
+        return back()->with('error', 'CPF ou senha inválido(s)')->withInput();
+    }
+
+    public function logout(Request $request)
+    {
+        if(Auth::guard('admin')->check()){
+            $rota = 'showAdminLogin';
+        }
+
+        if(Auth::guard('users')->check()){
+            $rota = 'showLogin';
+        }
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        return redirect()->route($rota)->with('success', 'Usuário deslogado com sucesso!');
+    }
+
+    public function showAdminLogin()
+    {
+        return Inertia::render('Login/AdminLogin')
+            ->withViewData(['rootView' => 'views.app']);
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $credentials = $request->only(['cpf', 'password']);
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('redirectHome')->with('success', 'Login de Administrador realizado com sucesso!');
+        }
+        return back()->with('error', 'CPF ou senha inválido(s)')->withInput();
     }
 }

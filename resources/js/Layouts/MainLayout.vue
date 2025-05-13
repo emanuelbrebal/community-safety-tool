@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useForm } from '@inertiajs/vue3';
 import '../../css/mainLayout.css';
+import '@css/flashMessages.css';
 
 const page = usePage();
 
@@ -13,17 +14,16 @@ defineEmits(['register', 'list']);
 
 const form = useForm();
 
-const home = () => {
-  form.get(route('redirectHome'));
-}
+const navigation = {
+  home: () => form.get(route('redirectHome')),
+  register: () => form.get(route('redirectRegister')),
+  list: () => form.get(route('redirectListUsers')),
+  login: () => form.get(route('showLogin')),
+  logout: () => form.post(route('logout')),
+  adminLogin: () => form.get(route('showAdminLogin')),
+};
 
-const registrar = () => {
-  form.get(route('redirectRegister'));
-}
 
-const listar = () => {
-  form.get(route('redirectListUsers'));
-}
 </script>
 
 <template>
@@ -31,13 +31,22 @@ const listar = () => {
     <header class="header">
       <nav class="navbar navbar-expand-lg navbar-light bg-navbar">
         <div class="container-fluid">
-          <a class="navbar-brand" @click="home">Guardião da Vila</a>
+          <a class="navbar-brand" @click="navigation.home">Guardião da Vila</a>
           <div class="d-flex ms-auto">
-            <button class="btn btn-primary me-2" @click="registrar">
+            <button class="btn btn-success me-2" @click="navigation.login">
+              Login
+            </button>
+            <button class="btn btn-success me-2" @click="navigation.adminLogin">
+              Login Adm
+            </button>
+            <button class="btn btn-primary me-2" @click="navigation.register">
               Registrar
             </button>
-            <button class="btn btn-outline-secondary" @click="listar">
+            <button class="btn btn-secondary me-2" @click="navigation.list">
               Listar
+            </button>
+            <button class="btn btn-danger" @click="navigation.logout">
+              Logout
             </button>
           </div>
         </div>
@@ -45,7 +54,6 @@ const listar = () => {
     </header>
 
     <main class="main-bg">
-      <!-- Exibição de mensagens de sucesso ou erro -->
       <div v-if="success" class="alert alert-success" role="alert">
         {{ success }}
       </div>
