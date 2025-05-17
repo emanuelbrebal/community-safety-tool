@@ -26,6 +26,7 @@ return new class extends Migration
 
             $table->date('incident_date');
             $table->time('incident_time');
+            $table->boolean('anonymous');
             $table->boolean('active');
         });
     }
@@ -35,6 +36,20 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+       Schema::table('publications', function (Blueprint $table) {
+        $table->dropForeign(['incident_id']);
+        $table->dropForeign(['urgency_id']);
+        $table->dropForeign(['media_id']);
+        $table->dropForeign(['publication_address_id']);
+
+        $table->dropColumn('incident_id');
+        $table->dropColumn('urgency_id');
+        $table->dropColumn('media_id');
+        $table->dropColumn('publication_address_id');
+        $table->dropColumn('incident_date');
+        $table->dropColumn('incident_time');
+        $table->dropColumn('anonymous');
+        $table->dropColumn('active');
+    });
     }
 };

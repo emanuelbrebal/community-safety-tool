@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Incident extends Model
 {
@@ -12,7 +13,12 @@ class Incident extends Model
 
     protected $fillable = [
         'incident',
-        'description'
+        'description',
+        'urgency_id'
     ];
 
+    public function urgency(): HasOne
+    {
+        return $this->hasOne(Urgency::class, 'id', 'urgency_id');
+    }
 }
