@@ -18,7 +18,10 @@ class DatabaseSeeder extends Seeder
             GenderSeeder::class,
             SectionTitleSeeder::class,
             HousingProfileQuestionsSeeder::class,
-            //aqui vão mais seeders
+            AdminSeeder::class,
+            UserSeeder::class,
+            UrgencySeeder::class,
+            IncidentSeeder::class,
         ]);
     }
 }
