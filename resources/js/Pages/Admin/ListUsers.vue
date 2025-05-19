@@ -1,7 +1,7 @@
 
 <script setup>
 import MainLayout from "@l/MainLayout.vue";
-import "../../css/usersDashboard.css"
+import "@css/usersDashboard.css"
 
 defineOptions({ layout: MainLayout });
 

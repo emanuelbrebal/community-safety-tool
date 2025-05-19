@@ -18,16 +18,17 @@ return new class extends Migration
             $table->unsignedTinyInteger('urgency_id');
             $table->foreign('urgency_id')->references('id')->on('urgency');
 
-            $table->unsignedBigInteger('media_id')->nullable();
-            $table->foreign('media_id')->references('id')->on('publication_media');
+            $table->unsignedBigInteger('publication_media_id')->nullable();
+            $table->foreign('publication_media_id')->references('id')->on('publication_media');
 
-            $table->unsignedBigInteger('publication_address_id')->nullable();
+            $table->unsignedBigInteger('publication_address_id');
             $table->foreign('publication_address_id')->references('id')->on('publication_address');
 
             $table->date('incident_date');
             $table->time('incident_time');
             $table->boolean('anonymous');
             $table->boolean('active');
+            $table->timestamps();
         });
     }
 
@@ -50,6 +51,7 @@ return new class extends Migration
         $table->dropColumn('incident_time');
         $table->dropColumn('anonymous');
         $table->dropColumn('active');
+        $table->dropTimestamps();
     });
     }
 };

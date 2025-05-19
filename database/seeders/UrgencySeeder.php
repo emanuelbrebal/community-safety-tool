@@ -17,22 +17,26 @@ class UrgencySeeder extends Seeder
             [
 
                 'urgency' => 'Baixa',
-                'description' => 'Situações que não requerem ação imediata e representam pouco ou nenhum risco.'
+                'description' => 'Situações que não requerem ação imediata e representam pouco ou nenhum risco.',
+                'color' => 'Verde'
             ],
             [
 
                 'urgency' => 'Média',
-                'description' => 'Incidentes que exigem atenção, mas não são emergenciais.'
+                'description' => 'Incidentes que exigem atenção, mas não são emergenciais.',
+                'color' => 'Amarelo'
             ],
             [
 
                 'urgency' => 'Alta',
-                'description' => 'Situações graves que requerem ação rápida, mas sem risco iminente de vida.'
+                'description' => 'Situações graves que requerem ação rápida, mas sem risco iminente de vida.',
+                'color' => 'Laranja'
             ],
             [
 
                 'urgency' => 'Crítica',
-                'description' => 'Emergências que colocam vidas em risco e exigem resposta imediata.'
+                'description' => 'Emergências que colocam vidas em risco e exigem resposta imediata.',
+                'color' => 'Vermelho'
             ],
         ];
 

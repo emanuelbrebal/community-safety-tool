@@ -1,0 +1,47 @@
+.publication{
+    padding: 1rem;
+    box-shadow: 0px 0px 5px var(--black);
+}
+
+.content{
+    border: solid 1px var(--gray);
+    padding: 10px;
+}
+
+.urgency-box{
+    justify-content: space-between;
+    padding-right: 10px;    
+}
+
+.urgency{
+    width: fit-content;
+}
+
+.incident{
+    text-decoration: underline;
+}
+
+.Vermelho{
+    background-color: var(--red);
+    color: var(--white);
+}
+
+.Amarelo{
+    background-color: var(--yellow);
+}
+
+.Verde{
+    background-color: var(--green);
+}
+
+.Laranja{
+    background-color: var(--orange);
+}
+
+.fit-content{
+    width: fit-content;
+}
+
+.margin-buttons{
+    margin-right: 1rem;
+}

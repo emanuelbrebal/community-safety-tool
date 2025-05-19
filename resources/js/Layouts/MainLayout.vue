@@ -3,6 +3,8 @@ import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useForm } from '@inertiajs/vue3';
 import '../../css/mainLayout.css';
+import '../../css/publication.css';
+import '../../css/colors.css';
 import '@css/flashMessages.css';
 
 const page = usePage();
@@ -21,6 +23,7 @@ const navigation = {
   login: () => form.get(route('showLogin')),
   logout: () => form.post(route('logout')),
   adminLogin: () => form.get(route('showAdminLogin')),
+  createPublication: () => form.get(route('redirectCreatePublication')),
 };
 
 
@@ -38,6 +41,9 @@ const navigation = {
             </button>
             <button class="btn btn-success me-2" @click="navigation.adminLogin">
               Login Adm
+            </button>
+            <button class="btn btn-success me-2" @click="navigation.createPublication">
+              Criar Publicação
             </button>
             <button class="btn btn-primary me-2" @click="navigation.register">
               Registrar
@@ -67,7 +73,7 @@ const navigation = {
     </main>
 
     <footer class="bg-footer text-center py-3 mt-auto footer">
-        <span class="text-muted">
+        <span>
           © 2025 Guardião da Vila. Todos os direitos reservados.
         </span>
     </footer>
