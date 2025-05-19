@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -16,22 +17,20 @@ class Publication extends Model
         'title',
         'user_id',
         'message',
-        'comment_id',
         'incident_id',
         'urgency_id',
         'publication_media_id',
-        'publication_address_id'
+        'publication_address_id',
+        'incident_date',
+        'incident_time',
+        'anonymous',
+        'active'
     ];
 
-  
-    public function comment(): HasMany
-    {
-        return $this->hasMany(Comment::class, 'id', 'comment_id');
-    }
 
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function incident(): HasOne

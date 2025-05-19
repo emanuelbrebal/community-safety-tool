@@ -25,7 +25,7 @@ class RegisterController extends Controller
             ->groupBy(function ($item) {
                 return $item->section->section_title;
             });
-        return Inertia::render('Register', [
+        return Inertia::render('Registers/Register', [
             'genders' => $genders,
             'communities' => $communities,
             'housing_profile_questions' => $housing_profile_questions
@@ -38,11 +38,9 @@ class RegisterController extends Controller
         //outro para o endereço
         //e o outro para o perfil de moradia, cada um com seu form request
         //    dd($request);
-        DB::beginTransaction();
-
+        
         try {
-
-            // dd($request);
+            DB::beginTransaction();
 
             $user = User::create([
                 'first_name' => $request->first_name,
@@ -67,9 +65,6 @@ class RegisterController extends Controller
                 'user_id'      => $user->id
             ]);
 
-            // $user->address_id = $address->id;
-            $user->save();
-
             foreach ($request->housing_questions as $questionId => $value) {
                 HousingProfileAnswer::create([
                     'user_id'    => $user->id,
@@ -78,7 +73,6 @@ class RegisterController extends Controller
                     'check'      => filter_var($value, FILTER_VALIDATE_BOOLEAN),
                 ]);
             }
-
 
             DB::commit();
 
