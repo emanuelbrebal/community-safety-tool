@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('mobile_number');
             $table->date('born_date');
+            $table->string('profile_picture');
 
             $table->string('password');
             $table->boolean('active')->default(true);

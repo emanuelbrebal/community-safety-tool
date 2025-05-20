@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('community_id');
             $table->foreign('community_id')->references('id')->on('communities');
 
+            $table->string('profile_picture');
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

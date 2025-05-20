@@ -24,7 +24,8 @@ class UserSeeder extends Seeder
                 'mobile_number' => '82999654909',
                 'born_date' => '2013-01-12',
                 'password' => Hash::make('123'),
-                'active' => true
+                'active' => true,
+                'profile_picture' => ""
             ],
         ];
 
