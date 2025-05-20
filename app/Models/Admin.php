@@ -16,6 +16,7 @@ class Admin extends Authenticatable
         'mobile_number',
         'password',
         'community_id',
+        'profile_picture',
         'active'
     ];
 

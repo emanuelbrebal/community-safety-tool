@@ -22,7 +22,8 @@ class AdminSeeder extends Seeder
                 'mobile_number' => '82999654909',
                 'password' => Hash::make('123'),
                 'community_id' => 1,
-                'active' => true
+                'active' => true,
+                'profile_picture' => ""
             ],
         ];
 
