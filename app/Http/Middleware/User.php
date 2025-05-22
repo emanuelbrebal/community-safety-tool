@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class User
@@ -15,6 +16,9 @@ class User
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!Auth::guard('users')->user()->active){
+            return redirect()->route('redirectLoginUser')->with('error', 'Seu usuário foi banido ou excluído. Para mais detalhes, contacte seu administrador');
+        }
         return $next($request);
     }
 }
