@@ -16,22 +16,7 @@ use Inertia\Inertia;
 
 class RegisterController extends Controller
 {
-    public function redirectRegister()
-    {
-        $genders = Gender::all();
-        $communities = Community::all()->where('active', true);
-        $housing_profile_questions = HousingProfile::with('section')
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->section->section_title;
-            });
-        return Inertia::render('Registers/Register', [
-            'genders' => $genders,
-            'communities' => $communities,
-            'housing_profile_questions' => $housing_profile_questions
-        ]);
-    }
-
+    
     public function createRegister(Request $request)
     {
         //aqui vem um service para criar o registro de usuário

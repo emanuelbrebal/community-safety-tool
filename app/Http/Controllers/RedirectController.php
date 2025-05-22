@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Community;
+use App\Models\Gender;
+use App\Models\HousingProfile;
 use App\Models\HousingProfileAnswer;
 use App\Models\Incident;
 use App\Models\Publication;
@@ -29,11 +32,6 @@ class RedirectController extends Controller
         ]);
     }
 
-    public function redirectRegister()
-    {
-        return Inertia::render('Registers/Register');
-    }
-
     public function redirectListUsers()
     {
         $users = User::with(['address.community'])->get();
@@ -52,6 +50,34 @@ class RedirectController extends Controller
         return Inertia::render('Publications/CreatePublication', [
             'incidents' => $incidents,
             'urgencies' => $urgencies
+        ]);
+    }
+
+    public function redirectLoginUser()
+    {
+        return Inertia::render('Login/Login')
+            ->withViewData(['rootView' => 'views.app']);
+    }
+
+     public function redirectLoginAdmin()
+    {
+        return Inertia::render('Login/AdminLogin')
+            ->withViewData(['rootView' => 'views.app']);
+    }
+
+    public function redirectRegister()
+    {
+        $genders = Gender::all();
+        $communities = Community::all()->where('active', true);
+        $housing_profile_questions = HousingProfile::with('section')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->section->section_title;
+            });
+        return Inertia::render('Registers/Register', [
+            'genders' => $genders,
+            'communities' => $communities,
+            'housing_profile_questions' => $housing_profile_questions
         ]);
     }
 }

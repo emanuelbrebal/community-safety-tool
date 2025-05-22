@@ -20,9 +20,9 @@ const navigation = {
   home: () => form.get(route('redirectHome')),
   register: () => form.get(route('redirectRegister')),
   list: () => form.get(route('redirectListUsers')),
-  login: () => form.get(route('showLogin')),
+  login: () => form.get(route('redirectLoginUser')),
   logout: () => form.post(route('logout')),
-  adminLogin: () => form.get(route('showAdminLogin')),
+  adminLogin: () => form.get(route('redirectLoginAdmin')),
   createPublication: () => form.get(route('redirectCreatePublication')),
 };
 
