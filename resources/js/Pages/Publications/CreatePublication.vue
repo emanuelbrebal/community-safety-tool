@@ -1,7 +1,7 @@
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
 import { useForm } from "@inertiajs/vue3";
-import { computed, watch } from 'vue';
+import { computed, watch, ref } from 'vue';
 
 defineOptions({ layout: MainLayout });
 
@@ -9,6 +9,8 @@ const props = defineProps({
   incidents: Array,
   urgencies: Array,
 });
+
+
 
 const form = useForm({
   title: "",
@@ -25,7 +27,12 @@ const form = useForm({
 });
 
 const submit = () => {
-  form.post(route("createPublication"));
+  form.post(route("createPublication"), {
+    forceFormData: true,
+    onSuccess: () => {
+        console.log('Enviado com sucesso')
+    }
+  });
 };
 
 watch(() => form.incident_id, (newIncidentId => {
@@ -43,14 +50,19 @@ const selectedUrgencyName = computed(() => {
   return incident?.urgency?.urgency || '';
 });
 
+const imageUrl = ref(null);
 function handleFileUpload(event) {
-    form.image = event.target.files[0];
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        form.image = file;
+        imageUrl.value = URL.createObjectURL(file)
+    }
 }
 </script>
 
 <template>
   <div class="">
-    <form class="px-4 py-3" @submit="submit">
+    <form class="px-4 py-3" @submit="submit" enctype="multipart/form-data">
       <div class="row mb-3">
         <h3>Conte a todos o que aconteceu!</h3>
         <div class="col-md-4">

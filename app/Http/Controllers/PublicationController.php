@@ -17,7 +17,7 @@ class PublicationController extends Controller
         // $user = Auth::guard('users')->user();
         // dd($user);
         // fazer o model de user_publications e utilizar o id de $user e $publication
-
+        
         try {
             DB::beginTransaction();
 

@@ -25,7 +25,7 @@ class RedirectController extends Controller
         if (Auth::guard('admin')->check()) {
             $user = 'admin';
         }
-        
+       
         return Inertia::render('Home', [
             'user' => Auth::guard($user)->user(),
             'publications' => $publications

@@ -6,7 +6,8 @@ defineOptions({ layout: MainLayout });
 
 defineProps({
   user: Object,
-  publications: Object
+  publications: Object,
+  publicationMedia: Object
 });
 
 const form = useForm();
@@ -33,12 +34,18 @@ const redirectCreatePublication= () =>{
             <div class="col-md-6">
               <div class="row">
                 <div class="d-flex justify-content-between">
-                  Endereço do Autor: {{ publication.anonymous ? 'Não identificado' : publication.address.public_place + " " + publication.address.number}}
+                  Endereço do Autor: {{ publication.anonymous ? 'Não identificado' : publication.address.public_place + ", " + publication.address.number}}
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M10.001 7.8a2.2 2.2 0 1 0 0 4.402A2.2 2.2 0 0 0 10 7.8zm0-2.6A2.2 2.2 0 1 0 9.999.8a2.2 2.2 0 0 0 .002 4.4m0 9.6a2.2 2.2 0 1 0 0 4.402a2.2 2.2 0 0 0 0-4.402"/></svg>
                   </div>
                 </div>
               </div>
           </div>
+         
+          <h3 v-if="publication.media">Imagem:</h3>
+          <div v-if="publication.media" class="publication-content media-content d-flex justify-content-center mb-3">
+            <img  v-if="publication.media" :src="`/storage/${publication.media.path}`" alt="Imagem da ocorrência" class="img-fluid rounded media" />  
+          </div>
+            
           <div id="publication-content">
               <div class="row mb-3">
                 <div class="col-md-8">
