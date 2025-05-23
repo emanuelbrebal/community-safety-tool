@@ -43,9 +43,9 @@ class Publication extends Model
         return $this->hasOne(Urgency::class, 'id', 'urgency_id');
     }
 
-    public function media(): HasMany
+    public function media(): HasOne
     {
-        return $this->hasMany(PublicationMedia::class, 'id', 'publication_media_id');
+        return $this->hasOne(PublicationMedia::class, 'id', 'publication_media_id');
     }
 
     public function address(): HasOne

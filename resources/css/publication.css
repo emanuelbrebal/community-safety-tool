@@ -45,3 +45,17 @@
 .margin-buttons{
     margin-right: 1rem;
 }
+
+.media{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.media-content{
+    background-color: var(--gray);
+    padding: 1rem;
+}
