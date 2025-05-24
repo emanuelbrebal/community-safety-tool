@@ -2,47 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\LoginService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class LoginController extends Controller
 {
-    
-    public function login(Request $request)
-    {
-        $credentials = $request->only(['cpf', 'password']);
+    protected $loginService;
 
-        if (Auth::guard('users')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('redirectHome')->with('success', 'Login realizado com sucesso!');
-        }
-        return back()->with('error', 'CPF ou senha inválido(s)')->withInput();
+    public function __construct(LoginService $login_service){
+        $this->loginService = $login_service;
     }
-
-    public function logout(Request $request)
+    
+    public function userLogin(Request $request)
     {
-        $rota = 'redirectLoginUser';
-        
-        if(Auth::guard('admin')->check()){
-            $rota = 'redirectLoginAdmin';
+        try{
+            return $this->loginService->authenticate($request, 'users');
+        } catch (\Exception $e){
+            return back()->with('error', 'Usuário não existe! Cadastre-se agora!');
         }
-
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        
-        return redirect()->route($rota)->with('success', 'Usuário deslogado com sucesso!');
     }
 
     public function adminLogin(Request $request)
     {
-        $credentials = $request->only(['cpf', 'password']);
-
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('redirectHome')->with('success', 'Login de Administrador realizado com sucesso!');
+        try{
+            return $this->loginService->authenticate($request, 'admin');
+        } catch (\Exception $e){
+            return back()->with('error', 'Administrador não existe!');
         }
-        return back()->with('error', 'CPF ou senha inválido(s)')->withInput();
     }
+
+    public function logout(Request $request)
+    {
+        try{
+            return $this->loginService->logout($request);
+        } catch(\Exception $e){
+            return back()->with('error', 'Não foi possível realizar logout!');
+        }
+    }
+
 }

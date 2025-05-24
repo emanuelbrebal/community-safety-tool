@@ -9,8 +9,11 @@
 }
 
 .urgency-box{
-    justify-content: space-between;
+    justify-self: end;
+    gap: 1rem;
     padding-right: 10px;    
+    width: fit-content;
+    flex-wrap: nowrap;
 }
 
 .urgency{
@@ -58,4 +61,29 @@
 .media-content{
     background-color: var(--gray);
     padding: 1rem;
+}
+
+.address{
+    background-color: var(--gray);
+    padding: .5rem;
+    border-radius: 5px;
+}
+
+.author-profile-picture{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    border: solid 3px var(--gray);
+    object-fit: cover;
+}
+
+.profile-pic{
+    width: fit-content;
+    flex-wrap: nowrap;
+    display: flex;
+    gap: 1rem;
+}
+
+.publication-date{
+    gap: 1rem;
 }

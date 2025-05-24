@@ -18,7 +18,7 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 Route::controller(LoginController::class)->group(function () {    
-    Route::post('/login-post', 'login')->name('login');
+    Route::post('/login-post', 'userLogin')->name('userLogin');
     Route::post('/logout', 'logout')->name('logout');
     
     // admin
@@ -27,7 +27,7 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 //usuários logados
-Route::middleware(['loggedUser', 'user'])->group(function () { 
+Route::middleware(['loggedUser'])->group(function () { 
     Route::controller(PublicationController::class)->group(function () {
         Route::post('/publication/create-post', 'createPublication')->name('createPublication');
     });
