@@ -16,7 +16,7 @@ class LoggedUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::guard('users')->check()){
+        if(Auth::guard('users')->check() || Auth::guard('admin')->check()){
             return $next($request);
         }
         return redirect()->route('redirectLoginUser')->with('Sessão expirada! Faça login novamente.');

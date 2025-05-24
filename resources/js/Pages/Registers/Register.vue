@@ -1,6 +1,7 @@
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
 import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineOptions({ layout: MainLayout });
 
@@ -29,6 +30,7 @@ const form = useForm({
   municipality: '',
   state: '',
   housing_questions: {}, 
+  profile_picture: null
 });
 
 Object.values(props.housing_profile_questions).forEach((questions) => {
@@ -41,12 +43,25 @@ const submit = () =>{
   form.post(route('createRegister'));
 };
 
+const imageUrl = ref(null);
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        form.profile_picture = file;
+        imageUrl.value = URL.createObjectURL(file)
+    }
+}
 </script>
 
 <template>
   <div class="">
     <h3 class="px-4 py-3">Cadastro Pessoal</h3>
-    <form class="px-4 py-3" @submit.prevent="submit">
+    <form class="px-4 py-3" @submit.prevent="submit" enctype="multipart/form-data">
+      <div class="col-md-4 mb-3">
+             <label for="profile_picture">Foto de Perfil</label>
+             <input type="file" class="form-control" accept="image/png, image/jpeg, image/jpg"
+             @change="handleFileUpload">
+         </div>
       <div class="row mb-3">
         <div class="col form-group">
           <label for="first_name">Primeiro nome:</label>

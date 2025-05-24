@@ -72,7 +72,7 @@ function handleFileUpload(event) {
       </div>
       <div class="mb-3 row">
           <div class="col-md-4">
-             <label for="email">Tem imagens?</label>
+             <label for="image">Tem imagens?</label>
              <input type="file" class="form-control" accept="image/png, image/jpeg, image/jpg"
              @change="handleFileUpload">
          </div>
