@@ -1,0 +1,26 @@
+.bg-navbar, .bg-footer{
+    background-color: var(--main-red);
+    color: white;
+}
+
+.container{
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 1rem #747e78;
+}
+
+.main-bg{
+    background-color: var(--gray);
+}
+.main{
+    padding: 1rem;
+}
+
+.navbar-brand{
+    color: var(--white);
+    cursor: pointer;
+}
+
+.footer{
+    color: var(--white);
+}

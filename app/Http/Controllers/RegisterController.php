@@ -36,7 +36,7 @@ class RegisterController extends Controller
             return redirect()->route('redirectHome')->with('success', 'Cadastro realizado com sucesso!');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Erro ao cadastrar usuário!' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao cadastrar usuário!');
         }
     }
 }

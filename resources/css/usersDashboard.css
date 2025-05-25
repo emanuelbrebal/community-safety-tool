@@ -1,5 +1,19 @@
+.modal-update-users {
+  justify-self: center;
+}
+
+
+.update-user-component {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1rem;
+}
+
 @media screen and (max-width: 520px) {
-  #addressSpan, #housingProfileSpan{
+
+  #addressSpan,
+  #housingProfileSpan {
     display: none;
   }
 
