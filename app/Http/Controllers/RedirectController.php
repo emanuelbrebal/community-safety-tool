@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Admin;
 use App\Models\Community;
 use App\Models\Gender;
 use App\Models\HousingProfile;
@@ -11,6 +12,7 @@ use App\Models\Incident;
 use App\Models\Publication;
 use App\Models\Urgency;
 use App\Models\User;
+use App\Services\AdminService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,14 +21,18 @@ use Inertia\Inertia;
 class RedirectController extends Controller
 {
     private $userService;
+    private $adminService;
 
-    public function __construct(UserService $user_service)
+    public function __construct(UserService $user_service, AdminService $admin_service)
     {
         $this->userService = $user_service;
+        $this->adminService = $admin_service;
     }
     public function redirectHome()
     {
-        $publications = Publication::with('user', 'incident', 'urgency', 'media', 'address')->orderBy('created_at', 'asc')->get();
+        $publications = Publication::with('user', 'incident', 'urgency', 'media', 'address')
+        ->orderBy('created_at', 'asc')
+        ->get();
 
         $user = 'users';
         if (Auth::guard('admin')->check()) {
@@ -43,9 +49,11 @@ class RedirectController extends Controller
     {
         $users = User::with(['address.community'])->get();
         $answers = HousingProfileAnswer::with(['question.section'])->get();
+        $admins = Admin::with(['community'])->get();
 
         return Inertia::render('Admin/ListUsers', [
             'users' => $users,
+            'admins' => $admins,
             'answers' => $answers,
         ]);
     }
@@ -76,7 +84,7 @@ class RedirectController extends Controller
     public function redirectRegister()
     {
         $genders = Gender::all();
-        $communities = Community::where('active', true);
+        $communities = Community::where('active', true)->get();
         $housing_profile_questions = HousingProfile::with('section')
             ->get()
             ->groupBy(function ($item) {
@@ -84,9 +92,9 @@ class RedirectController extends Controller
             });
 
         return Inertia::render('Registers/Register', [
-            'housing_profile_questions' => $genders,
-            'genders' => $communities,
-            'communities' => $housing_profile_questions
+            'housing_profile_questions' => $housing_profile_questions,
+            'genders' => $genders,
+            'communities' => $communities
         ]);
     }
 
@@ -132,6 +140,24 @@ class RedirectController extends Controller
             'user_id' => (int) $id,
             'housing_profile_answers' => $answers,
             'housing_profile_questions' => $questions
+        ]);
+    }
+
+    public function redirectAdminRegister()
+    {
+        $communities = Community::where('active', true)->get();
+
+        return Inertia::render('Registers/AdminRegister', [
+            'communities' => $communities
+        ]);
+    }
+
+     public function redirectUpdateAdmin($id)
+    {
+        $admin = $this->adminService->getAdmin($id);
+
+        return Inertia::render('Admin/UpdateAdmin', [
+            'admin' => $admin,
         ]);
     }
 }

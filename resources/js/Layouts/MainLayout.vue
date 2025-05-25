@@ -1,33 +1,34 @@
 <script setup>
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
-import { useForm } from '@inertiajs/vue3';
-import '../../css/mainLayout.css';
-import '../../css/publication.css';
-import '../../css/updateUser.css';
-import '../../css/colors.css';
-import '@css/flashMessages.css';
+import { useForm } from "@inertiajs/vue3";
+import "../../css/mainLayout.css";
+import "../../css/publication.css";
+import "../../css/updateUser.css";
+import "../../css/colors.css";
+import "@css/flashMessages.css";
 
 const page = usePage();
 
 const success = computed(() => page.props.flash?.success || null);
 const error = computed(() => page.props.flash?.error || null);
 
-defineEmits(['register', 'list']);
+defineEmits(["register", "list"]);
 
 const form = useForm();
 
 const navigation = {
-  home: () => form.get(route('redirectHome')),
-  register: () => form.get(route('redirectRegister')),
-  list: () => form.get(route('redirectListUsers')),
-  login: () => form.get(route('redirectLoginUser')),
-  logout: () => form.post(route('logout')),
-  adminLogin: () => form.get(route('redirectLoginAdmin')),
-  createPublication: () => form.get(route('redirectCreatePublication')),
+  home: () => form.get(route("redirectHome")),
+  register: () => form.get(route("redirectRegister")),
+  list: () => form.get(route("redirectListUsers")),
+  login: () => form.get(route("redirectLoginUser")),
+  logout: () => form.post(route("logout")),
+  adminLogin: () => form.get(route("redirectLoginAdmin")),
+  createAdmin: () => form.get(route("redirectAdminRegister")),
+  updateAdmin: (id) => form.get(route("redirectUpdateAdmin", id)),
+  deleteAdmin: (id) => form.get(route("redirectDeleteAdmin", id)),
+  createPublication: () => form.get(route("redirectCreatePublication")),
 };
-
-
 </script>
 
 <template>
@@ -35,15 +36,27 @@ const navigation = {
     <header class="header">
       <nav class="navbar navbar-expand-lg navbar-light bg-navbar">
         <div class="container-fluid">
-          <a class="navbar-brand" @click="navigation.home">Guardião da Vila</a>
+          <a class="navbar-brand" @click="navigation.home">Comunidade Alerta</a>
           <div class="d-flex ms-auto">
             <button class="btn btn-success me-2" @click="navigation.login">
               Login
             </button>
+            <button class="btn btn-primary me-2" @click="navigation.register">
+              Cadastrar Usuário
+            </button>
             <button class="btn btn-success me-2" @click="navigation.adminLogin">
               Login Adm
             </button>
-            <button class="btn btn-success me-2" @click="navigation.createPublication">
+            <button class="btn btn-primary me-2" @click="navigation.createAdmin">
+              Cadastrar Adm
+            </button>
+            <button class="btn btn-success me-2" @click="navigation.updateAdmin">
+              Atualizar Adm
+            </button>
+            <button
+              class="btn btn-success me-2"
+              @click="navigation.createPublication"
+            >
               Criar Publicação
             </button>
             <button class="btn btn-primary me-2" @click="navigation.register">
@@ -74,9 +87,7 @@ const navigation = {
     </main>
 
     <footer class="bg-footer text-center py-3 mt-auto footer">
-        <span>
-          © 2025 Guardião da Vila. Todos os direitos reservados.
-        </span>
+      <span> © 2025 Comunidade Alerta. Todos os direitos reservados. </span>
     </footer>
   </div>
 </template>

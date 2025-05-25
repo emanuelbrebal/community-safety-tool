@@ -9,6 +9,7 @@ defineOptions({ layout: AdminLayout });
 
 defineProps({
   users: Array,
+  admins: Object,
   answers: Array,
 });
 
@@ -20,6 +21,9 @@ const navigation = {
   updateUser: (id) => router.visit(route("redirectUpdateUser", id)),
   banUser: (id) => form.post(route("banUser", id)),
   unbanUser: (id) => form.post(route("unbanUser", id)),
+  updateAdmin: (id) => router.visit(route("redirectUpdateAdmin", id)),
+  deactivateAdmin: (id) => form.post(route("deactivateAdmin", id)),
+  reactivateAdmin: (id) => form.post(route("reactivateAdmin", id)),
 };
 </script>
 
@@ -203,9 +207,7 @@ const navigation = {
                         Editar usuário: {{ user.first_name }}
                       </h1>
                     </div>
-                    <UpdateUser 
-                      :user = "user"
-                    />
+                    <UpdateUser :user="user" />
                   </div>
                 </div>
               </div>
@@ -283,5 +285,96 @@ const navigation = {
         </tr>
       </tbody>
     </table>
+  </div>
+  <div class="container">
+    <h2 class="text-xl font-semibold mb-4">Listagem de Administradores</h2>
+    <div
+      v-for="admin in admins"
+      :key="admin.id"
+      class="admin-container container"
+    >
+      <div class="row">
+        <p>Nome: {{ admin.first_name }}</p>
+        <p>Comunidade: {{ admin.community.community }}</p>
+      </div>
+      <div class="organiza_btns">
+        <button
+          class="btn btn-primary"
+          @click="navigation.updateAdmin(admin.id)"
+        >
+          Editar
+        </button>
+        
+        <button
+          class="btn"
+          :class="admin.active ? 'btn-danger' : 'btn-success'"
+          data-bs-toggle="modal"
+          :data-bs-target="'#modal_delete_admin_' + admin.id"
+        >
+          {{ admin.active ? "Banir" : "Desbanir" }}
+        </button>
+        <div
+          class="modal fade"
+          :id="'modal_delete_admin_' + admin.id"
+          tabindex="-1"
+          :aria-labelledby="'label_modal_delete_admin_' + admin.id"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">
+                  Banir usuário: {{ admin.first_name }}
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                Tem certeza que deseja prosseguir com o banimento da conta de
+                <strong>{{ admin.first_name }}</strong
+                >?
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Fechar
+                </button>
+                <div v-if="admin.active">
+                  <form>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      @click="navigation.deactivateAdmin(admin.id)"
+                      data-bs-dismiss="modal"
+                    >
+                      Banir
+                    </button>
+                  </form>
+                </div>
+                <div v-if="!admin.active">
+                  <form>
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      @click="navigation.reactivateAdmin(admin.id)"
+                      data-bs-dismiss="modal"
+                    >
+                      Desbanir
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

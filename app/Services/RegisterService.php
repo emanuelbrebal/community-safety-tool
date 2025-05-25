@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Address;
+use App\Models\Admin;
 use App\Models\HousingProfileAnswer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -56,5 +57,29 @@ class RegisterService
                 'check'      => filter_var($value, FILTER_VALIDATE_BOOLEAN),
             ]);
         }
+    }
+
+    public function createAdmin(Request $request)
+    {
+       
+        $admin = Admin::create([
+            'first_name' => $request->first_name,
+            'surname' => $request->surname,
+            'cpf' => $request->cpf,
+            'email' => $request->email,
+            'mobile_number' => $request->mobile_number,
+            'password' => Hash::make($request->password),
+            'community_id' => $request->community_id,
+            'profile_picture' => '/storage/img/admin-placeholder.png'
+        ]);
+
+        if($request->hasFile('profile_picture')){
+            $path = $request->file('profile_picture')->store('img', 'public');
+            $admin->update([
+                'profile_picture' => $path
+            ]);
+        }
+
+        return $admin;
     }
 }

@@ -27,12 +27,8 @@ const form = useForm({
 });
 
 const submit = () => {
-  form.post(route("createPublication"), {
-    forceFormData: true,
-    onSuccess: () => {
-        console.log('Enviado com sucesso')
-    }
-  });
+  form.post(route("createPublication")
+  );
 };
 
 watch(() => form.incident_id, (newIncidentId => {

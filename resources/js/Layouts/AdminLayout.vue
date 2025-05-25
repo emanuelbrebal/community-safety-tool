@@ -35,7 +35,7 @@ const navigation = {
     <header class="header">
       <nav class="navbar navbar-expand-lg navbar-light bg-navbar">
         <div class="container-fluid">
-          <a class="navbar-brand" @click="navigation.home">Guardião da Vila</a>
+          <a class="navbar-brand" @click="navigation.home">Comunidade Alerta</a>
           <div class="d-flex ms-auto">
             <button class="btn btn-success me-2" @click="navigation.login">
               Login
@@ -75,7 +75,7 @@ const navigation = {
 
     <footer class="bg-footer text-center py-3 mt-auto footer">
         <span>
-          © 2025 Guardião da Vila. Todos os direitos reservados.
+          © 2025 Comunidade Alerta. Todos os direitos reservados.
         </span>
     </footer>
   </div>
