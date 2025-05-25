@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
                 'born_date' => '2013-01-12',
                 'password' => Hash::make('123'),
                 'active' => true,
-                'profile_picture' => ""
+                'profile_picture' => "/img/profile-picture-placeholder.png"
             ],
         ];
 

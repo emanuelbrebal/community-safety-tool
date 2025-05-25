@@ -6,8 +6,8 @@ import { ref } from 'vue';
 defineOptions({ layout: MainLayout });
 
 const props = defineProps({
-  genders: Array,
-  communities: Array,
+  genders: Object,
+  communities: Object,
   housing_profile_questions: Object,
 });
 

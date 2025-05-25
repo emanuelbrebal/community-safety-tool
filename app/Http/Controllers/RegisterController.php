@@ -39,4 +39,17 @@ class RegisterController extends Controller
             return redirect()->back()->with('error', 'Erro ao cadastrar usuário!');
         }
     }
+
+    public function createAdminRegister(Request $request){
+        try {
+            DB::beginTransaction();
+            $this->registerService->createAdmin($request);
+            DB::commit();
+
+            return redirect()->route('redirectHome')->with('success', 'Cadastro de Administrador realizado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Erro ao cadastrar administrador!');
+        }
+    }
 }

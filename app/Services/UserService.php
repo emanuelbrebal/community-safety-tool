@@ -34,6 +34,7 @@ class UserService
             'first_name' => $request->first_name,
             'surname' => $request->surname,
             'gender_id' => $request->gender_id,
+            'email' => $request->email,
             'mobile_number' => $request->mobile_number,
             'password' => $password,
             'profile_picture' => $path
@@ -100,6 +101,6 @@ class UserService
 
     public function getUser($id)
     {
-        return User::with('gender', 'address',)->findOrFail($id);
+        return User::with('gender', 'address')->findOrFail($id);
     }
 }
