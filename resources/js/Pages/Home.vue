@@ -131,44 +131,31 @@ const redirectCreatePublication = () => {
     <div class="mb-3 content" id="publication_address">
       <div class="row">
         <div class="col-md-8">
-          <span class="address">
-            Logradouro do ocorrido:
-            {{ publication.address.public_place }}
-          </span>
+          Logradouro do ocorrido:
+          {{ publication.address.public_place }}
         </div>
         <div class="col-md-4">
-          <span class="address">
-            Número:
-            {{ publication.address.number }}
-          </span>
+          Número:
+          {{ publication.address.number }}
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-12">
-          <span class="address">
-            Ponto de referência:
-            {{ publication.address.complement }}
-          </span>
+          Ponto de referência:
+          {{ publication.address.complement }}
         </div>
       </div>
-
+      <p>
+        Quando aconteceu?
+      </p>
       <div class="row">
-        <div class="col-md-2 address">
-          <span class="address">
-            {{
-              new Date(publication.incident_time).toLocaleTimeString("pt-BR", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            }}
-          </span>
+        <div class="col-md-2">
+          {{ new Date(publication.incident_time).toLocaleDateString("pt-BR") }}
         </div>
 
         <div class="col-md-2">
-          <span class="address">
-            {{ new Date(publication.incident_date).toLocaleDateString("pt-BR") }}
-          </span>
+          {{ new Date(publication.incident_date).toLocaleDateString("pt-BR") }}
         </div>
       </div>
     </div>

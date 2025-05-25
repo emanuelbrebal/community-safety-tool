@@ -12,6 +12,7 @@ class RegisterService
 {
     public function createUser(Request $request)
     {
+        $born_date = \Carbon\Carbon::parse($request->born_date)->format('d/m/Y');
         $user = User::create([
             'first_name' => $request->first_name,
             'surname' => $request->surname,
@@ -19,8 +20,8 @@ class RegisterService
             'gender_id' => $request->gender_id,
             'email' => $request->email,
             'mobile_number' => $request->mobile_number,
-            'born_date' => $request->born_date,
-            'password' => Hash::make($request->password),
+            'born_date' => $born_date,
+            'password' => Hash::make($request->password)
         ]);
 
         $path = $request->file('profile_picture')->store('img', 'public');

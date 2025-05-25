@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { useForm } from '@inertiajs/vue3';
-import '../../css/mainLayout.css';
+import '../../css/adminLayout.css';
 import '../../css/publication.css';
 import '../../css/updateUser.css';
 import '../../css/colors.css';
