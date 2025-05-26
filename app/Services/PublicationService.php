@@ -7,15 +7,25 @@ use App\Models\PublicationMedia;
 use App\Models\PublicationAddress;
 use App\Models\User;
 use App\Models\UserPublication;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class PublicationService
 {
+    private $userService;
+
+    public function __construct(UserService $user_service)
+    {
+        $this->userService = $user_service;
+    }
+
     public function createPublication(Request $request)
     {
         $user_id = $this->getUserID();
+
+        $community_id = $this->userService->getUserCommunityID($user_id);
 
         $publication_address = $this->createPublicationAddress($request);
         
@@ -30,7 +40,9 @@ class PublicationService
             'anonymous' => $request->anonymous,
             'active' => true,
             'publication_address_id' => $publication_address->id,
-            'publication_media' => null
+            'publication_media' => null,
+            'solved' => false,
+            'community_id' => $community_id
         ]);
 
        $this->createPublicationMedia($request, $publication);
@@ -50,6 +62,7 @@ class PublicationService
 
     public function createPublicationMedia(Request $request, Publication $publication)
     {
+        $publication_media = null;
         
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('img', 'public');

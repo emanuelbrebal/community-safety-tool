@@ -25,10 +25,14 @@ class RegisterService
             'password' => Hash::make($request->password)
         ]);
 
-        $path = $request->file('profile_picture')->store('img', 'public');
-        $user->update([
-            'profile_picture' => $path
-        ]);
+        $path = "/img/profile-picture-placeholder.png";
+
+        if($request->hasFile('profile_picture')){
+            $path = $request->file('profile_picture')->store('img', 'public');
+            $user->update([
+                'profile_picture' => $path
+            ]);
+        }
 
         return $user;
     }
