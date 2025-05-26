@@ -24,7 +24,9 @@ class Publication extends Model
         'incident_date',
         'incident_time',
         'anonymous',
-        'active'
+        'active',
+        'solved',
+        'community_id'
     ];
 
 
@@ -53,6 +55,8 @@ class Publication extends Model
         return $this->hasOne(PublicationAddress::class, 'id', 'publication_address_id');
     }
 
+    public function community(): BelongsTo
+    {
+        return $this->belongsTo(Community::class, 'community_id', 'id');
+    }
 }
-     
-

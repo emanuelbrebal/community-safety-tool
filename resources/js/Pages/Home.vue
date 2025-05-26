@@ -4,9 +4,10 @@ import { useForm } from "@inertiajs/vue3";
 
 defineOptions({ layout: MainLayout });
 
-defineProps({
+const props = defineProps({
   user: Object,
-  publications: Object,
+  user_id: Number,
+  publications: Array,
   publicationMedia: Object,
 });
 
@@ -23,6 +24,10 @@ const redirectCreatePublication = () => {
     <button class="btn btn-success me-2" @click="redirectCreatePublication">
       Criar Publicação
     </button>
+  </div>
+
+  <div class="container publication mb-3 d-grid justify-content-center"  v-if="props.publications.length === 0">
+      <h3>A comunidade está segura! Bom trabalho!</h3>
   </div>
 
   <div

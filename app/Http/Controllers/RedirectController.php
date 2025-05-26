@@ -14,6 +14,7 @@ use App\Models\Urgency;
 use App\Models\User;
 use App\Services\AdminService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -30,18 +31,31 @@ class RedirectController extends Controller
     }
     public function redirectHome()
     {
-        $publications = Publication::with('user', 'incident', 'urgency', 'media', 'address')
+
+        $guard = 'users';
+    
+        if (Auth::guard('admin')->check()) {
+            $guard = 'admin';
+        }
+
+        $user_id = $this->userService->getUserByGuard($guard)->id;
+        
+        $community_chat = Address::where('user_id', $user_id)->pluck('community_id')->first();
+    
+
+        $publications = Publication::with('user', 'incident', 'urgency', 'media', 'address', 'community')
+        ->where('community_id', $community_chat)
+        ->where('active', true)
+        ->where('solved', false)
+        ->where('created_at', '>=', Carbon::now()->subMonth())
+        ->orderBy('urgency_id', 'desc')
         ->orderBy('created_at', 'asc')
         ->get();
 
-        $user = 'users';
-        if (Auth::guard('admin')->check()) {
-            $user = 'admin';
-        }
-
         return Inertia::render('Home', [
-            'user' => Auth::guard($user)->user(),
-            'publications' => $publications
+            'user' => $this->userService->getUserByGuard($guard),
+            'user_id' => $user_id,
+            'publications' => $publications->toArray()
         ]);
     }
 
