@@ -1,7 +1,7 @@
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
 import { useForm } from "@inertiajs/vue3";
-
+import { router } from "@inertiajs/vue3";
 defineOptions({ layout: MainLayout });
 
 const props = defineProps({
@@ -16,6 +16,13 @@ const form = useForm();
 const redirectCreatePublication = () => {
   form.get(route("redirectCreatePublication"));
 };
+
+const navigation = {
+  redirectUpdatePublication: (id) => router.visit(route("redirectUpdatePublication", id)),
+  deactivatePublication: (id) => form.post(route("deactivatePublication", id)),
+  reactivatePublication: (id) => form.post(route("reactivatePublication", id)),
+};
+
 </script>
 
 <template>
@@ -26,8 +33,11 @@ const redirectCreatePublication = () => {
     </button>
   </div>
 
-  <div class="container publication mb-3 d-grid justify-content-center"  v-if="props.publications.length === 0">
-      <h3>A comunidade está segura! Bom trabalho!</h3>
+  <div
+    class="container publication mb-3 d-grid justify-content-center"
+    v-if="props.publications.length === 0"
+  >
+    <h3>A comunidade está segura! Bom trabalho!</h3>
   </div>
 
   <div
@@ -77,17 +87,81 @@ const redirectCreatePublication = () => {
             <div class="d-flex justify-content-between publication-date">
               Data de publicação:
               {{ new Date(publication.created_at).toLocaleDateString("pt-BR") }}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
+              <button
+                class="button-three-dots"
+                data-bs-toggle="modal"
+                :data-bs-target="'#modal_options_' + publication.id"
+                @click.prevent
+                v-if="publication.user_id == user_id"
               >
-                <path
-                  fill="currentColor"
-                  d="M10.001 7.8a2.2 2.2 0 1 0 0 4.402A2.2 2.2 0 0 0 10 7.8zm0-2.6A2.2 2.2 0 1 0 9.999.8a2.2 2.2 0 0 0 .002 4.4m0 9.6a2.2 2.2 0 1 0 0 4.402a2.2 2.2 0 0 0 0-4.402"
-                />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M10.001 7.8a2.2 2.2 0 1 0 0 4.402A2.2 2.2 0 0 0 10 7.8zm0-2.6A2.2 2.2 0 1 0 9.999.8a2.2 2.2 0 0 0 .002 4.4m0 9.6a2.2 2.2 0 1 0 0 4.402a2.2 2.2 0 0 0 0-4.402"
+                  />
+                </svg>
+              </button>
+
+              <div
+                class="modal fade"
+                :id="'modal_options_' + publication.id"
+                tabindex="-1"
+                :aria-labelledby="'modal_options_' + publication.id"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content modal-update-users">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5">
+                        Opções da publicação: {{ publication.title }}
+                      </h1>
+                    </div>
+                    <div class="modal-body modal-options-publication">
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="navigation.redirectUpdatePublication(publication.id)"
+                        data-bs-dismiss="modal"
+                      >
+                        Editar Publicação
+                      </button>
+                      <div v-if="publication.active">
+                        <form>
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            @click="
+                              navigation.deactivatePublication(publication.id)
+                            "
+                            data-bs-dismiss="modal"
+                          >
+                            Desativar Publicação
+                          </button>
+                        </form>
+                      </div>
+                      <div v-if="!publication.active">
+                        <form>
+                          <button
+                            type="button"
+                            class="btn btn-success"
+                            @click="
+                              navigation.reactivatePublication(publication.id)
+                            "
+                            data-bs-dismiss="modal"
+                          >
+                            Reativar Publicação
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div>
@@ -151,9 +225,7 @@ const redirectCreatePublication = () => {
           {{ publication.address.complement }}
         </div>
       </div>
-      <p>
-        Quando aconteceu?
-      </p>
+      <p>Quando aconteceu?</p>
       <div class="row">
         <div class="col-md-2">
           {{ new Date(publication.incident_time).toLocaleDateString("pt-BR") }}

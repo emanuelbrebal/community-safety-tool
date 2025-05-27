@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
-import { useForm } from "@inertiajs/vue3";
+import { usePage, useForm,  } from "@inertiajs/vue3";
+import { onMounted } from "vue";
 import "../../css/mainLayout.css";
 import "../../css/publication.css";
 import "../../css/updateUser.css";
@@ -29,6 +29,19 @@ const navigation = {
   deleteAdmin: (id) => form.get(route("redirectDeleteAdmin", id)),
   createPublication: () => form.get(route("redirectCreatePublication")),
 };
+onMounted(() => {
+  const alerts = document.querySelectorAll('.alert')
+
+  alerts.forEach(alert => {
+    setTimeout(() => {
+      alert.classList.remove('show')
+      alert.classList.add('fade')
+
+      setTimeout(() => alert.remove(), 500)
+    }, 5000)
+  })
+});
+
 </script>
 
 <template>
@@ -59,9 +72,6 @@ const navigation = {
             >
               Criar Publicação
             </button>
-            <button class="btn btn-primary me-2" @click="navigation.register">
-              Registrar
-            </button>
             <button class="btn btn-secondary me-2" @click="navigation.list">
               Listar
             </button>
@@ -74,10 +84,10 @@ const navigation = {
     </header>
 
     <main class="main-bg">
-      <div v-if="success" class="alert alert-success" role="alert">
+      <div v-if="success" class="alert alert-success fade show" role="alert">
         {{ success }}
       </div>
-      <div v-if="error" class="alert alert-danger" role="alert">
+      <div v-if="error" class="alert alert-danger fade show" role="alert">
         {{ error }}
       </div>
 
