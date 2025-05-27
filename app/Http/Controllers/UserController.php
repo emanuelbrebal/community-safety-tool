@@ -52,7 +52,7 @@ class UserController extends Controller
             return redirect()->route('redirectListUsers')->with('success', 'Perfil de moradia de usuário atualizado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Erro ao atualizar o Perfil de moradia do usuário!' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erro ao atualizar o Perfil de moradia do usuário!');
         }
     }
 

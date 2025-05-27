@@ -103,10 +103,25 @@ class UserService
     {
         return User::with('gender', 'address')->findOrFail($id);
     }
+
+    public function getUserID()
+    {
+        $user_id = null;
+        if (Auth::guard('users')->check()) {
+            return $user_id = Auth::guard('users')->user()->id;
+        }
+
+        if (Auth::guard('admin')->check()) {
+            return $user_id = Auth::guard('admin')->user()->id;
+        }
+        return $user_id;
+    }
+
     public function getuserByGuard($guard)
     {
         return Auth::guard($guard)->user();
     }
+    
     public function getUserCommunityID($id)
     {
         $user = $this->getUser($id);

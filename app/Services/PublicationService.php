@@ -21,14 +21,19 @@ class PublicationService
         $this->userService = $user_service;
     }
 
+    public function getPublicationById($id)
+    {
+        return $publication = Publication::with(['user', 'address', 'media', 'urgency', 'media', 'community'])->findOrFail($id);
+    }
+
     public function createPublication(Request $request)
     {
-        $user_id = $this->getUserID();
+        $user_id = $this->userService->getUserID();
 
         $community_id = $this->userService->getUserCommunityID($user_id);
 
         $publication_address = $this->createPublicationAddress($request);
-        
+
         $publication = Publication::create([
             'title' => $request->title,
             'user_id' => $user_id,
@@ -45,15 +50,15 @@ class PublicationService
             'community_id' => $community_id
         ]);
 
-       $this->createPublicationMedia($request, $publication);
-        
+        $this->createPublicationMedia($request, $publication);
+
 
         return $publication;
     }
 
     public function createPublicationAddress(Request $request)
     {
-       return $publication_address = PublicationAddress::create([
+        return $publication_address = PublicationAddress::create([
             'public_place' => $request->public_place,
             'number' => $request->number,
             'complement' => $request->complement
@@ -63,7 +68,7 @@ class PublicationService
     public function createPublicationMedia(Request $request, Publication $publication)
     {
         $publication_media = null;
-        
+
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('img', 'public');
             $publication_media = PublicationMedia::create([
@@ -80,25 +85,36 @@ class PublicationService
         return $publication_media;
     }
 
-    public function createUserPublication(Publication $publication){
-        $user_id = $this->getUserID();
+    public function createUserPublication(Publication $publication)
+    {
+        $user_id = $this->userService->getUserID();
         return $user_publication = UserPublication::create([
             'user_id' => $user_id,
             'publication_id' => $publication->id
         ]);
     }
 
-
-    public function getUserID()
+    public function deactivatePublication($id)
     {
-        $user_id = null;
-        if (Auth::guard('users')->check()) {
-            return $user_id = Auth::guard('users')->user()->id;
+        $publication = $this->getPublicationById($id);
+        if ($publication->active) {
+            $publication->update([
+                'active' => false
+            ]);
+            return redirect()->route('redirectHome')->with('success', 'Publicação desativada com sucesso!');
         }
+        return back()->with('error', 'Publicação já está desativada!');
+    }
 
-        if (Auth::guard('admin')->check()) {
-            return $user_id = Auth::guard('admin')->user()->id;
+    public function reactivatePublication($id)
+    {
+        $publication = $this->getPublicationById($id);
+        if (!$publication->active) {
+            $publication->update([
+                'active' => true
+            ]);
+            return redirect()->route('redirectHome')->with('success', 'Publicação ativada com sucesso!');
         }
-        return $user_id;
+        return back()->with('error', 'Publicação já está ativada!');
     }
 }

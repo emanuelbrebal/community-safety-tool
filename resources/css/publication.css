@@ -87,3 +87,23 @@
 .publication-date{
     gap: 1rem;
 }
+
+.media-preview{
+    width: 100px;
+    object-fit: cover;
+}
+
+.button-three-dots{
+    border: none;
+    background-color: transparent;
+}
+
+.modal-options-publication{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    justify-items: center;
+}
+.btn{
+    width: fit-content;
+}

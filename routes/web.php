@@ -32,11 +32,17 @@ Route::controller(LoginController::class)->group(function () {
 Route::middleware(['loggedUser'])->group(function () { 
     Route::controller(PublicationController::class)->group(function () {
         Route::post('/publication/create-post', 'createPublication')->name('createPublication');
+
+        
+        Route::post('/update-publication-post/{id}', 'updatePublication')->name('updatePublication');
+        Route::post('/deactivate-publication/{id}', 'deactivatePublication')->name('deactivatePublication');
+        Route::post('/reactivate-publication/{id}', 'reactivatePublication')->name('reactivatePublication');
     });
 
     Route::controller(RedirectController::class)->group(function () {
         Route::get('/', 'redirectHome')->name('redirectHome');
         Route::get('/publication/create', 'redirectCreatePublication')->name('redirectCreatePublication');
+        Route::get('/update-publication-post/{id}', 'redirectUpdatePublication')->name('redirectUpdatePublication');
     });
 });
 
@@ -61,5 +67,6 @@ Route::middleware(['loggedAdmin', 'admin'])->group(function() {
         Route::post('/update-admin-post/{id}', 'updateAdmin')->name('updateAdmin');
         Route::post('/deactivate-admin/{id}', 'deactivateAdmin')->name('deactivateAdmin');
         Route::post('/reactivate-admin/{id}', 'reactivateAdmin')->name('reactivateAdmin');
+        
     });
 });

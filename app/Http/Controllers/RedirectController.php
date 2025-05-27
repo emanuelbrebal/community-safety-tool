@@ -83,6 +83,20 @@ class RedirectController extends Controller
         ]);
     }
 
+    public function redirectUpdatePublication($id)
+    {
+        
+        $publication = Publication::with('user', 'incident', 'urgency', 'media', 'address', 'community')->findOrFail($id);
+        $incidents = Incident::with('urgency')->get();
+        $urgencies = Urgency::all();
+
+        return Inertia::render('Publications/UpdatePublication', [
+            'publication' => $publication,
+            'incidents' => $incidents,
+            'urgencies' => $urgencies
+        ]);
+    }
+
     public function redirectLoginUser()
     {
         return Inertia::render('Login/Login')

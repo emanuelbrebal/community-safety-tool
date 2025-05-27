@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
-import { useForm } from '@inertiajs/vue3';
+import { usePage, useForm } from "@inertiajs/vue3";
+import { onMounted } from 'vue';
 import '@css/flashMessages.css';
 
 const page = usePage();
@@ -13,6 +13,18 @@ defineEmits(['register', 'list']);
 
 const form = useForm();
 
+onMounted(() => {
+  const alerts = document.querySelectorAll('.alert')
+
+  alerts.forEach(alert => {
+    setTimeout(() => {
+      alert.classList.remove('show')
+      alert.classList.add('fade')
+
+      setTimeout(() => alert.remove(), 500)
+    }, 5000)
+  })
+});
 </script>
 
 <template>
