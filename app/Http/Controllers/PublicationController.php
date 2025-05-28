@@ -34,7 +34,7 @@ class PublicationController extends Controller
             return redirect('redirectHome')->with('success', 'Publicação criada com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Algum erro aconteceu ao criar a publicação!');
+            return redirect()->back()->with('error', 'Algum erro aconteceu ao criar a publicação!' . $e->getMessage());
         };
     }
 

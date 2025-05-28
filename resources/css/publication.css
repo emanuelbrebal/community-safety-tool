@@ -107,3 +107,7 @@
 .btn{
     width: fit-content;
 }
+.btn-publicate{
+    justify-self: center;
+    width: 100%;
+}

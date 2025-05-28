@@ -32,8 +32,7 @@ class PublicationService
 
         $community_id = $this->userService->getUserCommunityID($user_id);
 
-        $publication_address = $this->createPublicationAddress($request);
-
+        
         $publication = Publication::create([
             'title' => $request->title,
             'user_id' => $user_id,
@@ -44,24 +43,25 @@ class PublicationService
             'urgency_id' => $request->urgency_id,
             'anonymous' => $request->anonymous,
             'active' => true,
-            'publication_address_id' => $publication_address->id,
-            'publication_media' => null,
             'solved' => false,
             'community_id' => $community_id
         ]);
-
+        
+        $this->createPublicationAddress($request, $publication, $community_id);
         $this->createPublicationMedia($request, $publication);
 
 
         return $publication;
     }
 
-    public function createPublicationAddress(Request $request)
+    public function createPublicationAddress(Request $request, Publication $publication, $community_id)
     {
         return $publication_address = PublicationAddress::create([
+            'publication_id' => $publication->id,
             'public_place' => $request->public_place,
             'number' => $request->number,
-            'complement' => $request->complement
+            'complement' => $request->complement,
+            'community_id' => $community_id
         ]);
     }
 
@@ -72,6 +72,7 @@ class PublicationService
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('img', 'public');
             $publication_media = PublicationMedia::create([
+                'publication_id' => $publication->id,
                 'path' => $path
             ]);
         };

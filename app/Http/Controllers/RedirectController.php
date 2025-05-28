@@ -51,7 +51,7 @@ class RedirectController extends Controller
         ->orderBy('urgency_id', 'desc')
         ->orderBy('created_at', 'asc')
         ->get();
-
+        
         return Inertia::render('Home', [
             'user' => $this->userService->getUserByGuard($guard),
             'user_id' => $user_id,

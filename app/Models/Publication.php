@@ -19,8 +19,6 @@ class Publication extends Model
         'message',
         'incident_id',
         'urgency_id',
-        'publication_media_id',
-        'publication_address_id',
         'incident_date',
         'incident_time',
         'anonymous',
@@ -45,14 +43,14 @@ class Publication extends Model
         return $this->hasOne(Urgency::class, 'id', 'urgency_id');
     }
 
-    public function media(): HasOne
+    public function media(): HasMany
     {
-        return $this->hasOne(PublicationMedia::class, 'id', 'publication_media_id');
+        return $this->hasMany(PublicationMedia::class);
     }
 
     public function address(): HasOne
     {
-        return $this->hasOne(PublicationAddress::class, 'id', 'publication_address_id');
+        return $this->hasOne(PublicationAddress::class);
     }
 
     public function community(): BelongsTo

@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('publication_address', function (Blueprint $table) {
             $table->id();
-            $table->string('public_place');
+            $table->string('public_place')->nullable();
             $table->string('number')->nullable();
             $table->string('complement')->nullable();
+
+            $table->unsignedBigInteger('publication_id');
+            $table->foreign('publication_id')->references('id')->on('publications');
         });
     }
 
