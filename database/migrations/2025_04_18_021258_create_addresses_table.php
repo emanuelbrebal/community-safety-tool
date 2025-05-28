@@ -15,18 +15,18 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('community_id');
-            $table->foreign('community_id')->references('id')->on('communities')->onDelete('cascade');
+            $table->foreign('community_id')->references('id')->on('communities');
             
             $table->string('zip_code');
             $table->string('state');
             $table->string('municipality');
             $table->string('district');
-            $table->string('public_place');
+            $table->string('public_place')->nullable();
             $table->string('number')->nullable();
             $table->string('complement')->nullable();
             
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

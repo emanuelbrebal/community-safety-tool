@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('publications', function (Blueprint $table) {
-            $table->boolean('solved');
+            $table->boolean('solved')->default(false);
 
             $table->unsignedInteger('community_id');
             $table->foreign('community_id')->references('id')->on('communities');
@@ -26,8 +26,8 @@ return new class extends Migration
     {
         Schema::table('publications', function (Blueprint $table) {
             $table->dropColumn('solved');
-            $table->dropColumn('community_id');
             $table->dropForeign(['community_id']);
+            $table->dropColumn('community_id');
 
         });
     }

@@ -18,17 +18,17 @@ const redirectCreatePublication = () => {
 };
 
 const navigation = {
-  redirectUpdatePublication: (id) => router.visit(route("redirectUpdatePublication", id)),
+  redirectUpdatePublication: (id) =>
+    router.visit(route("redirectUpdatePublication", id)),
   deactivatePublication: (id) => form.post(route("deactivatePublication", id)),
   reactivatePublication: (id) => form.post(route("reactivatePublication", id)),
 };
-
 </script>
 
 <template>
   <div class="container publication mb-3 d-grid justify-content-center">
     <h4>Conte a todos o que está acontecendo!</h4>
-    <button class="btn btn-success me-2" @click="redirectCreatePublication">
+    <button class="btn btn-success me-2 btn-publicate" @click="redirectCreatePublication">
       Criar Publicação
     </button>
   </div>
@@ -125,7 +125,9 @@ const navigation = {
                       <button
                         type="button"
                         class="btn btn-primary"
-                        @click="navigation.redirectUpdatePublication(publication.id)"
+                        @click="
+                          navigation.redirectUpdatePublication(publication.id)
+                        "
                         data-bs-dismiss="modal"
                       >
                         Editar Publicação
@@ -196,18 +198,26 @@ const navigation = {
         </div>
       </div>
     </div>
-    <div
-      v-if="publication.media"
-      class="publication-content media-content d-flex justify-content-center mb-3"
-    >
-      <img
-        v-if="publication.media"
-        :src="`/storage/${publication.media.path}`"
-        alt="Imagem da ocorrência"
-        class="img-fluid rounded media"
-      />
+    <div v-for="(publication, pubIndex) in props.publications" :key="pubIndex">
+      <div v-if="publication.media && publication.media.length">
+        <div
+          v-for="(media, index) in publication.media"
+          :key="index"
+          class="mb-3 media-content"
+        >
+          <img
+            :src="`/storage/${media.path}`"
+            alt="Imagem da publicação"
+            class="img-fluid media-preview"
+          />
+        </div>
+      </div>
     </div>
-    <div class="mb-3 content" id="publication_address">
+    <div
+      v-if="publication.address"
+      class="mb-3 content"
+      id="publication_address"
+    >
       <div class="row">
         <div class="col-md-8">
           Logradouro do ocorrido:

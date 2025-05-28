@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->id();
-            $table->string('cpf');
+            $table->string('cpf')->unique();
             $table->string('first_name');
             $table->string('surname');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('mobile_number');
             $table->string('password');
 
             $table->unsignedTinyInteger('community_id');
             $table->foreign('community_id')->references('id')->on('communities');
 
-            $table->string('profile_picture');
+            $table->string('profile_picture')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

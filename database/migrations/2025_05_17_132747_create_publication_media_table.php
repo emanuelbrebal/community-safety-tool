@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('publication_media', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
+            $table->string('path')->nullable();
+
+            $table->unsignedBigInteger('publication_id')->nullable();
+            $table->foreign('publication_id')->references('id')->on('publications');
         });
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('cpf')->unique();
 
             $table->unsignedBigInteger('gender_id');
-            $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
+            $table->foreign('gender_id')->references('id')->on('genders');
 
             $table->string('email')->unique();
             $table->string('mobile_number');
