@@ -5,12 +5,9 @@ namespace App\Services;
 use App\Models\Publication;
 use App\Models\PublicationMedia;
 use App\Models\PublicationAddress;
-use App\Models\User;
-use App\Models\UserPublication;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class UpdatePublicationService
 {
@@ -65,10 +62,16 @@ class UpdatePublicationService
         return $publication_media;
     }
 
+    public function getPublicationId(Publication $publication){
+        return $publication->id;
+    }
+
     public function getPublicationAddress(Publication $publication) {
-        return $publication->address;
+        $publication_id = $this->getPublicationId($publication);
+        return $publication_address = PublicationAddress::where('publication_id', $publication_id)->first();
     }
     public function getPublicationMedia(Publication $publication) {
-        return $publication->media;
+        $publication_id = $this->getPublicationId($publication);
+        return $publication_media = PublicationMedia::where('publication_id', $publication_id)->first();
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class LoggedUser
+class LoggedUserLoginAttempt
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,9 @@ class LoggedUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::guard('users')->check() || Auth::guard('admin')->check()){
-            return $next($request);
+        if (Auth::guard('users')->check() || Auth::guard('admin')->check()) {
+            return redirect()->route('redirectHome')->with('error','Usuário já está logado! Faça o logout antes de continuar!');
         }
-        return redirect()->route('redirectLoginUser')->with('error', 'Sessão expirada! Faça login novamente.');
+        return $next($request);
     }
 }

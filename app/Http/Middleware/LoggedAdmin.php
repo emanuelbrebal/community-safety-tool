@@ -19,6 +19,6 @@ class LoggedAdmin
         if(Auth::guard('admin')->check()){
             return $next($request);
         }
-        return redirect()->route('redirectLoginAdmin')->with('Sessão expirada! Faça login novamente.');
+        return redirect()->route('redirectLoginAdmin')->with('error', 'Sessão expirada! Faça login novamente.');
     }
 }

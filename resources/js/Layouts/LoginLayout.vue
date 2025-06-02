@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { usePage, useForm } from "@inertiajs/vue3";
 import { onMounted } from 'vue';
 import '@css/flashMessages.css';
+import '@css/login.css';
 
 const page = usePage();
 
@@ -36,7 +37,7 @@ onMounted(() => {
         {{ error }}
       </div>
 
-      <div class="container">
+      <div class="">
         <slot />
       </div>
     </main>

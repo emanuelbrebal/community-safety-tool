@@ -58,7 +58,7 @@ function handleFileUpload(event) {
 
 <template>
   <div class="">
-    <form class="px-4 py-3" @submit="submit" enctype="multipart/form-data">
+    <form class="px-4 py-3" @submit.prevent="submit" enctype="multipart/form-data">
       <div class="row mb-3">
         <h3>Conte a todos o que aconteceu!</h3>
         <div class="col-md-4">
