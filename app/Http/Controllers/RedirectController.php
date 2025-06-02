@@ -10,9 +10,12 @@ use App\Models\HousingProfile;
 use App\Models\HousingProfileAnswer;
 use App\Models\Incident;
 use App\Models\Publication;
+use App\Models\PublicationAddress;
+use App\Models\PublicationMedia;
 use App\Models\Urgency;
 use App\Models\User;
 use App\Services\AdminService;
+use App\Services\PublicationService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,38 +26,38 @@ class RedirectController extends Controller
 {
     private $userService;
     private $adminService;
+    private $publicationService;
 
-    public function __construct(UserService $user_service, AdminService $admin_service)
+    public function __construct(UserService $user_service, AdminService $admin_service, PublicationService $publication_service)
     {
         $this->userService = $user_service;
         $this->adminService = $admin_service;
+        $this->publicationService = $publication_service;
     }
+
     public function redirectHome()
     {
 
-        $guard = 'users';
-    
-        if (Auth::guard('admin')->check()) {
-            $guard = 'admin';
+        $guard = Auth::guard('admin')->check() ? 'admin' : 'users';
+        $user = $this->userService->getUserByGuard($guard);
+
+        if ($guard === 'admin') {
+            $publications = $this->publicationService->getRelevantPublications($user->community_id);
+
+            return Inertia::render('Home', [
+                'admin' => $user,
+                'admin_community_id' => $user->community_id,
+                'publications' => $publications->toArray()
+            ]);
         }
 
-        $user_id = $this->userService->getUserByGuard($guard)->id;
-        
-        $community_chat = Address::where('user_id', $user_id)->pluck('community_id')->first();
-    
+        $community_chat = Address::where('user_id', $user->id)->pluck('community_id')->first();
 
-        $publications = Publication::with('user', 'incident', 'urgency', 'media', 'address', 'community')
-        ->where('community_id', $community_chat)
-        ->where('active', true)
-        ->where('solved', false)
-        ->where('created_at', '>=', Carbon::now()->subMonth())
-        ->orderBy('urgency_id', 'desc')
-        ->orderBy('created_at', 'asc')
-        ->get();
-        
+        $publications = $this->publicationService->getRelevantPublications($community_chat);
+
         return Inertia::render('Home', [
-            'user' => $this->userService->getUserByGuard($guard),
-            'user_id' => $user_id,
+            'user' => $user,
+            'user_id' => $user->id,
             'publications' => $publications->toArray()
         ]);
     }
@@ -85,13 +88,19 @@ class RedirectController extends Controller
 
     public function redirectUpdatePublication($id)
     {
-        
-        $publication = Publication::with('user', 'incident', 'urgency', 'media', 'address', 'community')->findOrFail($id);
+
+        $publication = Publication::with('user', 'incident', 'urgency', 'community')->findOrFail($id);
+        $publication_id = $publication->id;
+        $publication_address = PublicationAddress::where('publication_id', $publication_id)->first();
+        $publication_media = PublicationMedia::where('publication_id', $publication_id)->get();
+
         $incidents = Incident::with('urgency')->get();
         $urgencies = Urgency::all();
 
         return Inertia::render('Publications/UpdatePublication', [
             'publication' => $publication,
+            'publication_address' => $publication_address,
+            'publication_media' => $publication_media,
             'incidents' => $incidents,
             'urgencies' => $urgencies
         ]);
@@ -180,12 +189,12 @@ class RedirectController extends Controller
         ]);
     }
 
-     public function redirectUpdateAdmin($id)
+    public function redirectUpdateAdmin($id)
     {
         $admin = $this->adminService->getAdmin($id);
 
         return Inertia::render('Admin/UpdateAdmin', [
-            'admin' => $admin,
+            'admin_id' => $admin->id,
         ]);
     }
 }

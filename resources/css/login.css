@@ -1,0 +1,38 @@
+.painel-login{
+    height: fit-content;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    box-shadow: 1px 1px 12px gray;
+    border-radius: 12px;
+}
+.painel-esquerdo{
+    width: 45%;
+    background-color: var(--main-blue);
+    border-radius: 12px 0 0 12px;
+}
+.painel-esquerdo img{
+    height: 100%;
+    width: 100%;
+}
+.painel-direito{
+width: 45%;
+align-self: center;
+}
+.app, .main-bg{
+    min-height: 100vh;
+}
+.organiza-login{
+    height: 100dvh;
+    width: 100dvw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-container{
+    display: flex;
+    justify-content: center;
+}
+.btn-login{
+    width: 50%;
+}

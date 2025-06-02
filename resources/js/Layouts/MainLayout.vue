@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { usePage, useForm,  } from "@inertiajs/vue3";
+import { usePage, useForm } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import "../../css/mainLayout.css";
 import "../../css/publication.css";
@@ -17,6 +17,12 @@ defineEmits(["register", "list"]);
 
 const form = useForm();
 
+const props = defineProps({
+  user: Object,
+  admin: Object,
+  admin_id: Number,
+});
+
 const navigation = {
   home: () => form.get(route("redirectHome")),
   register: () => form.get(route("redirectRegister")),
@@ -30,18 +36,17 @@ const navigation = {
   createPublication: () => form.get(route("redirectCreatePublication")),
 };
 onMounted(() => {
-  const alerts = document.querySelectorAll('.alert')
+  const alerts = document.querySelectorAll(".alert");
 
-  alerts.forEach(alert => {
+  alerts.forEach((alert) => {
     setTimeout(() => {
-      alert.classList.remove('show')
-      alert.classList.add('fade')
+      alert.classList.remove("show");
+      alert.classList.add("fade");
 
-      setTimeout(() => alert.remove(), 500)
-    }, 5000)
-  })
+      setTimeout(() => alert.remove(), 500);
+    }, 5000);
+  });
 });
-
 </script>
 
 <template>
@@ -51,30 +56,22 @@ onMounted(() => {
         <div class="container-fluid">
           <a class="navbar-brand" @click="navigation.home">Comunidade Alerta</a>
           <div class="d-flex ms-auto">
-            <button class="btn btn-success me-2" @click="navigation.login">
-              Login
-            </button>
-            <button class="btn btn-primary me-2" @click="navigation.register">
-              Cadastrar Usuário
-            </button>
-            <button class="btn btn-success me-2" @click="navigation.adminLogin">
-              Login Adm
-            </button>
-            <button class="btn btn-primary me-2" @click="navigation.createAdmin">
-              Cadastrar Adm
-            </button>
-            <button class="btn btn-success me-2" @click="navigation.updateAdmin">
-              Atualizar Adm
-            </button>
+            <p>
+              Usuário logado:
+              {{
+                admin ? admin.nome : user ? user.nome : "Usuário não encontrado"
+              }}
+            </p>
+            
             <button
               class="btn btn-success me-2"
               @click="navigation.createPublication"
             >
               Criar Publicação
             </button>
-            <button class="btn btn-secondary me-2" @click="navigation.list">
+            <a v-if="administrador" class="btn btn-secondary me-2" @click="navigation.list">
               Listar
-            </button>
+            </a>
             <button class="btn btn-danger" @click="navigation.logout">
               Logout
             </button>

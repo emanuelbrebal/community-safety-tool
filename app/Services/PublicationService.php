@@ -28,11 +28,11 @@ class PublicationService
 
     public function createPublication(Request $request)
     {
+        
         $user_id = $this->userService->getUserID();
 
         $community_id = $this->userService->getUserCommunityID($user_id);
 
-        
         $publication = Publication::create([
             'title' => $request->title,
             'user_id' => $user_id,
@@ -46,10 +46,9 @@ class PublicationService
             'solved' => false,
             'community_id' => $community_id
         ]);
-        
+
         $this->createPublicationAddress($request, $publication, $community_id);
         $this->createPublicationMedia($request, $publication);
-
 
         return $publication;
     }
@@ -117,5 +116,17 @@ class PublicationService
             return redirect()->route('redirectHome')->with('success', 'Publicação ativada com sucesso!');
         }
         return back()->with('error', 'Publicação já está ativada!');
+    }
+
+    public function getRelevantPublications($community_id)
+    {
+        return Publication::with('user', 'incident', 'urgency', 'media', 'address', 'community')
+            ->where('community_id', $community_id)
+            ->where('active', true)
+            ->where('solved', false)
+            ->where('created_at', '>=', Carbon::now()->subMonth())
+            ->orderBy('urgency_id', 'desc')
+            ->orderBy('created_at', 'asc')
+            ->get();
     }
 }
