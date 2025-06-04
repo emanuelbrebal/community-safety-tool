@@ -123,10 +123,17 @@ class PublicationService
         return Publication::with('user', 'incident', 'urgency', 'media', 'address', 'community')
             ->where('community_id', $community_id)
             ->where('active', true)
-            ->where('solved', false)
             ->where('created_at', '>=', Carbon::now()->subMonth())
             ->orderBy('urgency_id', 'desc')
             ->orderBy('created_at', 'asc')
             ->get();
+    }
+
+    public function contactAuthorities($id){
+        $publication = $this->getPublicationById($id); 
+        if ($publication->solved == false){
+            return $publication->update(['solved' => true]);
+        }
+        return back()->with('error', 'Denúncia já resolvida! Autoridades à caminho!');
     }
 }

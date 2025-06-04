@@ -11,6 +11,7 @@ use App\Models\HousingProfileAnswer;
 use App\Models\User;
 use App\Services\RegisterService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -32,15 +33,15 @@ class RegisterController extends Controller
             $address = $this->registerService->createAddress($request, $user);
             $this->registerService->createHousingProfilesAnswers($request, $user, $address);
             DB::commit();
-
-            return redirect()->route('redirectHome')->with('success', 'Cadastro realizado com sucesso!');
+            return redirect()->route('redirectHome')->with('success', 'Cadastro realizado com sucesso! Faça Login para continuar.');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Erro ao cadastrar usuário!');
         }
     }
 
-    public function createAdminRegister(Request $request){
+    public function createAdminRegister(Request $request)
+    {
         try {
             DB::beginTransaction();
             $this->registerService->createAdmin($request);

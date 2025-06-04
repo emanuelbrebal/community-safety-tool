@@ -29,7 +29,7 @@ class LoginController extends Controller
         try{
             return $this->loginService->authenticate($request, 'admin');
         } catch (\Exception $e){
-            return back()->with('error', 'Administrador não existe!');
+            return back()->with('error', 'Administrador não existe! Cadastre-se agora!');
         }
     }
 

@@ -3,6 +3,7 @@
 import AdminLayout from "@l/AdminLayout.vue";
 import { useForm, router } from "@inertiajs/vue3";
 import "@css/usersDashboard.css";
+import "@css/publication.css";
 import UpdateUser from "../User/UpdateUser.vue";
 
 defineOptions({ layout: AdminLayout });
@@ -34,6 +35,7 @@ const navigation = {
     <table class="table">
       <thead>
         <tr>
+          <th scope="col">Foto de Perfil</th>
           <th scope="col">Nome</th>
           <th scope="col">Endereço</th>
           <th scope="col">Perfil de Moradia</th>
@@ -42,6 +44,15 @@ const navigation = {
       </thead>
       <tbody>
         <tr v-for="user in users" :key="user.id">
+          <td>
+            <div class="profile-pic">
+              <img
+                class="author-profile-picture"
+                :src="user.profile_picture"
+                alt=""
+              />
+            </div>
+          </td>
           <td>{{ user.first_name }}</td>
           <td>
             <button
@@ -288,93 +299,96 @@ const navigation = {
   </div>
   <div class="container">
     <h2 class="text-xl font-semibold mb-4">Listagem de Administradores</h2>
-    <div
-      v-for="admin in admins"
-      :key="admin.id"
-      class="admin-container container"
-    >
-      <div class="row">
-        <p>Nome: {{ admin.first_name }}</p>
-        <p>Comunidade: {{ admin.community.community }}</p>
-      </div>
-      <div class="organiza_btns">
-        <button
-          class="btn btn-primary"
-          @click="navigation.updateAdmin(admin.id)"
-        >
-          Editar
-        </button>
-        
-        <button
-          class="btn"
-          :class="admin.active ? 'btn-danger' : 'btn-success'"
-          data-bs-toggle="modal"
-          :data-bs-target="'#modal_delete_admin_' + admin.id"
-        >
-          {{ admin.active ? "Banir" : "Desbanir" }}
-        </button>
-        <div
-          class="modal fade"
-          :id="'modal_delete_admin_' + admin.id"
-          tabindex="-1"
-          :aria-labelledby="'label_modal_delete_admin_' + admin.id"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5">
-                  Banir usuário: {{ admin.first_name }}
-                </h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                Tem certeza que deseja prosseguir com o banimento da conta de
-                <strong>{{ admin.first_name }}</strong
-                >?
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Fechar
-                </button>
-                <div v-if="admin.active">
-                  <form>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Foto de Perfil</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Comunidade</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="admin in admins" :key="admin.id">
+          <td>
+            <img
+              class="author-profile-picture"
+              :src="`/storage/${admin.profile_picture || 'profile-picture-placeholder.png'}`"
+              alt="Foto de perfil do administrador"
+            />
+          </td>
+          <td>{{ admin.first_name }}</td>
+          <td>{{ admin.community.community }}</td>
+          <td>
+            <button
+              class="btn btn-primary btn-sm me-2"
+              @click="navigation.updateAdmin(admin.id)"
+            >
+              Editar
+            </button>
+            <button
+              class="btn btn-sm"
+              :class="admin.active ? 'btn-danger' : 'btn-success'"
+              data-bs-toggle="modal"
+              :data-bs-target="'#modal_delete_admin_' + admin.id"
+            >
+              {{ admin.active ? "Banir" : "Desbanir" }}
+            </button>
+
+            <div
+              class="modal fade"
+              :id="'modal_delete_admin_' + admin.id"
+              tabindex="-1"
+              :aria-labelledby="'label_modal_delete_admin_' + admin.id"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5">
+                      Banir usuário: {{ admin.first_name }}
+                    </h1>
                     <button
                       type="button"
-                      class="btn btn-danger"
-                      @click="navigation.deactivateAdmin(admin.id)"
+                      class="btn-close"
                       data-bs-dismiss="modal"
-                    >
-                      Banir
-                    </button>
-                  </form>
-                </div>
-                <div v-if="!admin.active">
-                  <form>
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    Tem certeza que deseja
+                    {{ admin.active ? "banir" : "desbanir" }}
+                    <strong>{{ admin.first_name }}</strong
+                    >?
+                  </div>
+                  <div class="modal-footer">
                     <button
                       type="button"
-                      class="btn btn-success"
-                      @click="navigation.reactivateAdmin(admin.id)"
+                      class="btn btn-secondary"
                       data-bs-dismiss="modal"
                     >
-                      Desbanir
+                      Fechar
                     </button>
-                  </form>
+                    <button
+                      type="button"
+                      class="btn"
+                      :class="admin.active ? 'btn-danger' : 'btn-success'"
+                      @click="
+                        admin.active
+                          ? navigation.deactivateAdmin(admin.id)
+                          : navigation.reactivateAdmin(admin.id)
+                      "
+                      data-bs-dismiss="modal"
+                    >
+                      {{ admin.active ? "Banir" : "Desbanir" }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>

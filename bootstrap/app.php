@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'loggedAdmin' => LoggedAdmin::class,
             'loggedUserAttempt' => LoggedUserLoginAttempt::class,
             'OwnerOrAdminPublication' => OwnerOrAdminPublicationOwner::class,
+            'OwnerOrAdminPublicationOwner' => OwnerOrAdminPublicationOwner::class,
             'OwnerOrAdmin' => OwnerOrAdmin::class,
         ]);
     })

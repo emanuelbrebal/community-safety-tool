@@ -16,8 +16,9 @@ class LoggedUserLoginAttempt
      */
     public function handle(Request $request, Closure $next): Response
     {
+
         if (Auth::guard('users')->check() || Auth::guard('admin')->check()) {
-            return redirect()->route('redirectHome')->with('error','Usuário já está logado! Faça o logout antes de continuar!');
+            return redirect()->back()->with('error','Usuário já está logado! Faça o logout antes de continuar!');
         }
         return $next($request);
     }

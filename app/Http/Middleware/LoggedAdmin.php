@@ -14,11 +14,11 @@ class LoggedAdmin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-     public function handle(Request $request, Closure $next): Response
-    {
-        if(Auth::guard('admin')->check()){
-            return $next($request);
-        }
-        return redirect()->route('redirectLoginAdmin')->with('error', 'Sessão expirada! Faça login novamente.');
-    }
+    //  public function handle(Request $request, Closure $next): Response
+    // {
+    //     if(){
+    //         return $next($request);
+    //     }
+    //     return redirect()->route('redirectLoginAdmin')->with('error', 'Sessão Admin expirada! Faça login novamente.');
+    // }
 }

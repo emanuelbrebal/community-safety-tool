@@ -4,6 +4,7 @@ import { usePage, useForm } from "@inertiajs/vue3";
 import { onMounted } from 'vue';
 import '@css/flashMessages.css';
 import '@css/login.css';
+import "../../css/colors.css";
 
 const page = usePage();
 
@@ -26,10 +27,12 @@ onMounted(() => {
     }, 5000)
   })
 });
+
+
 </script>
 
 <template>
-    <main class="main-bg">
+    <main class="login-bg">
       <div v-if="success" class="alert alert-success" role="alert">
         {{ success }}
       </div>
@@ -37,9 +40,7 @@ onMounted(() => {
         {{ error }}
       </div>
 
-      <div class="">
         <slot />
-      </div>
     </main>
 
 </template>
