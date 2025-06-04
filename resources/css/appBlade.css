@@ -18,3 +18,8 @@
     min-height: 88dvh;
     width: 100%;
 }
+
+.-admin{
+    background-color: var(--main-red);
+    border: solid 1px var(--main-red);
+}

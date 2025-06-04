@@ -40,31 +40,37 @@ class RedirectController extends Controller
 
         $guard = Auth::guard('admin')->check() ? 'admin' : 'users';
         $user = $this->userService->getUserByGuard($guard);
+        $community_chat = Address::where('user_id', $user->id)->pluck('community_id')->first();
+        $publications = $this->publicationService->getRelevantPublications($community_chat);
+        $community = Community::where('id', $community_chat)->pluck('community')->first();
 
         if ($guard === 'admin') {
             $publications = $this->publicationService->getRelevantPublications($user->community_id);
 
-            return Inertia::render('Home', [
+            return Inertia::render('AdminHome', [
                 'admin' => $user,
                 'admin_community_id' => $user->community_id,
+                'community' => $community,
                 'publications' => $publications->toArray()
             ]);
         }
 
-        $community_chat = Address::where('user_id', $user->id)->pluck('community_id')->first();
-
-        $publications = $this->publicationService->getRelevantPublications($community_chat);
-
         return Inertia::render('Home', [
             'user' => $user,
             'user_id' => $user->id,
+            'community' => $community,
             'publications' => $publications->toArray()
         ]);
     }
 
     public function redirectListUsers()
     {
-        $users = User::with(['address.community'])->get();
+        $loggedAdmin = Auth::guard('admin')->user();
+        $users = User::with(['address.community'])
+            ->whereHas('address.community', function ($query) use ($loggedAdmin) {
+                $query->where('id', $loggedAdmin->community_id);
+            })
+            ->get();
         $answers = HousingProfileAnswer::with(['question.section'])->get();
         $admins = Admin::with(['community'])->get();
 
@@ -114,7 +120,10 @@ class RedirectController extends Controller
 
     public function redirectLoginAdmin()
     {
-        return Inertia::render('Login/AdminLogin')
+        $communities = Community::where('active', true)->get();
+        return Inertia::render('Login/AdminLogin', [
+            'communities' => $communities
+        ])
             ->withViewData(['rootView' => 'views.app']);
     }
 
@@ -195,6 +204,7 @@ class RedirectController extends Controller
 
         return Inertia::render('Admin/UpdateAdmin', [
             'admin_id' => $admin->id,
+            'admin' => $admin
         ]);
     }
 }

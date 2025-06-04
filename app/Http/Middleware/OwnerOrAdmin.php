@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin;
 use App\Models\Publication;
 use App\Models\User;
+use App\Services\UserService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,21 +19,28 @@ class OwnerOrAdmin
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
-    {
-        $loggedUser = Auth::guard('users')->user();
-        $loggedAdmin = Auth::guard('admin')->user();
-        
-        $userIdToUpdate = $request->route('id'); 
-        $userToUpdate = User::findOrFail($userIdToUpdate);
-        
-        if ($loggedAdmin && $loggedAdmin->community_id == $userToUpdate->community_id) {
-            return $next($request);
-        }
-        
-        if ($loggedUser && $loggedUser->id == $userToUpdate->id) {
-            return $next($request);
-        }
+{
+    $userIdToUpdate = $request->route('id'); 
 
-        return redirect()->back()->with('error', 'Você não tem permissão para acessar esta página.');
+    if (Auth::guard('admin')->check()) {
+        $loggedAdmin = Auth::guard('admin')->user();
+
+        $userToUpdate = Admin::findOrFail($userIdToUpdate);
+
+        if ($loggedAdmin->community_id === $userToUpdate->community_id) {
+            return $next($request);
+        }
     }
+
+    if (Auth::guard('users')->check()) {
+        $loggedUser = Auth::guard('users')->user();
+        $userToUpdate = User::findOrFail($userIdToUpdate);
+
+        if ($loggedUser->id === $userToUpdate->id) {
+            return $next($request);
+        }
+    }
+
+    return redirect()->back()->with('error', 'Você não tem permissão para acessar esta página.');
+}
 }

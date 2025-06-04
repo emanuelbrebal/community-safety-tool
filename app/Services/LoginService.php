@@ -10,25 +10,25 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginService
 {
-    public function authenticate(Request $request, string $guard)
+     public function authenticate(Request $request)
     {
+        $guard = $request->input('guard');
         $credentials = $request->only(['cpf', 'password']);
-        
-        if ($guard == 'users') {
-            Auth::guard($guard)->attempt($credentials);
-            $request->session()->regenerate();
-            return redirect()->route('redirectHome')->with('success', 'Usuário autenticado com sucesso!');
+
+        if ($guard === 'admin') {
+            $credentials = $request->only(['community_id', 'cpf', 'password']);
         }
 
-        if ($guard == 'admin') {
-            $credentials = $request->only(['cpf', 'password', 'community']);
-            Auth::guard($guard)->attempt($credentials);
+        if (Auth::guard($guard)->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('redirectHome')->with('success', 'Administrador autenticado com sucesso!');
+            $message = $guard === 'admin' ? 'Administrador autenticado com sucesso!' : 'Usuário autenticado com sucesso!';
+            return redirect()->route('redirectHome')->with('success', $message);
         }
 
-        return back()->with('error', 'CPF ou senha inválido(s)')->withInput();
+        return back()->with('error', 'Informação(ões) incorreta(as)')->withInput();
     }
+
+
 
 
     public function logout(Request $request)

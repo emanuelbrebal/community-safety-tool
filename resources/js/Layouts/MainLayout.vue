@@ -1,6 +1,6 @@
 <script setup>
-import { computed } from "vue";
-import { usePage, useForm } from "@inertiajs/vue3";
+import { computed, ref } from "vue";
+import { usePage, useForm, router } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import "../../css/mainLayout.css";
 import "../../css/publication.css";
@@ -25,15 +25,10 @@ const props = defineProps({
 
 const navigation = {
   home: () => form.get(route("redirectHome")),
-  register: () => form.get(route("redirectRegister")),
   list: () => form.get(route("redirectListUsers")),
-  login: () => form.get(route("redirectLoginUser")),
   logout: () => form.post(route("logout")),
-  adminLogin: () => form.get(route("redirectLoginAdmin")),
-  createAdmin: () => form.get(route("redirectAdminRegister")),
-  updateAdmin: (id) => form.get(route("redirectUpdateAdmin", id)),
-  deleteAdmin: (id) => form.get(route("redirectDeleteAdmin", id)),
   createPublication: () => form.get(route("redirectCreatePublication")),
+  updateUser: (id) => form.get(route('redirectUpdateUser', id))
 };
 onMounted(() => {
   const alerts = document.querySelectorAll(".alert");
@@ -47,6 +42,12 @@ onMounted(() => {
     }, 5000);
   });
 });
+
+const showLogoutMenu = ref(false);
+
+const toggleLogout = () => {
+  showLogoutMenu.value = !showLogoutMenu.value;
+};
 </script>
 
 <template>
@@ -56,25 +57,53 @@ onMounted(() => {
         <div class="container-fluid">
           <a class="navbar-brand" @click="navigation.home">Comunidade Alerta</a>
           <div class="d-flex ms-auto">
-            <p>
-              Usuário logado:
-              {{
-                admin ? admin.nome : user ? user.nome : "Usuário não encontrado"
-              }}
-            </p>
-            
-            <button
-              class="btn btn-success me-2"
-              @click="navigation.createPublication"
+            <a
+              v-if="admin"
+              class="btn btn-secondary me-2"
+              @click="navigation.list"
             >
-              Criar Publicação
-            </button>
-            <a v-if="administrador" class="btn btn-secondary me-2" @click="navigation.list">
               Listar
             </a>
-            <button class="btn btn-danger" @click="navigation.logout">
-              Logout
-            </button>
+          </div>
+          <div v-if="user" class="logged-user" @click="toggleLogout">
+            <a>
+              <img
+                class="author-profile-picture -sm"
+                :src="`/storage/${user.profile_picture}`"
+                alt="Foto de Perfil de Usuário"
+              />
+              Bem vindo(a):
+              {{ user.first_name }}
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path fill="currentColor" d="m7 10l5 5l5-5z" />
+              </svg>
+            </a>
+
+            <div v-if="showLogoutMenu" class="dropdown-user">
+              <a
+                v-if="admin"
+                @click="route.visit(route('redirectUpdateAdmin', admin.id))"
+                style="color: black"
+              >
+                Ver detalhes da conta
+              </a>
+              <a
+                v-else-if="user"
+                @click="navigation.updateUser(user.id)"
+                style="color: black; text-decoration: underline;"
+              >
+                Ver detalhes da conta
+              </a>
+              <button class="btn btn-danger" @click.stop="navigation.logout">
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </nav>

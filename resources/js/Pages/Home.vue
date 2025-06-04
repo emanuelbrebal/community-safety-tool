@@ -12,6 +12,7 @@ const props = defineProps({
   admin_community_id: Number,
   publications: Array,
   publicationMedia: Object,
+  community: String
 });
 
 const form = useForm();
@@ -32,7 +33,7 @@ const navigation = {
 
 <template>
   <div class="container publication mb-3 d-grid justify-content-center">
-    <h4>Conte a todos o que está acontecendo!</h4>
+    <h4>Conte a todos o que está acontecendo em {{ props.community }}</h4>
     <button
       class="btn btn-success me-2 btn-publicate"
       @click="redirectCreatePublication"
@@ -241,15 +242,14 @@ const navigation = {
           {{ publication.address.complement }}
         </div>
       </div>
-      <p>Quando aconteceu?</p>
-      <div class="row">
-        <div class="col-md-2">
+      <div class="col-md-12">
+        <span>Quando aconteceu?</span>
+        No dia:
+          {{ new Date(publication.incident_date).toLocaleDateString("pt-BR") }},
+        na hora:
           {{ publication.incident_time }}
-        </div>
+       
 
-        <div class="col-md-2">
-          {{ new Date(publication.incident_date).toLocaleDateString("pt-BR") }}
-        </div>
       </div>
     </div>
     <div class="mb-3 content">

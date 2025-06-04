@@ -17,7 +17,7 @@ class User
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('users')->user()->active){
-            return redirect()->route('redirectLoginUser')->with('error', 'Seu usuário foi banido ou excluído. Para mais detalhes, contacte seu administrador');
+            return redirect()->back('redirectLoginUser')->with('error', 'Seu usuário foi banido ou excluído. Para mais detalhes, contacte seu administrador');
         }
         return $next($request);
     }

@@ -1,9 +1,9 @@
 <script setup>
-import MainLayout from "@/Layouts/MainLayout.vue";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 
-defineOptions({ layout: MainLayout });
+defineOptions({ layout: AdminLayout });
 
 const props = defineProps({
   admin: Object,
